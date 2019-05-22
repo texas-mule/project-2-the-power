@@ -1,6 +1,6 @@
 # Project 2 The Power - Stock Application
 
-##Main Project Responsibilites
+## Main Project Responsibilites
 
 Jenkins:
 Sean Gordon
@@ -26,10 +26,11 @@ News Article SpringBoot API
 -Haydin 
 -Andres Orellana
 
+------------------------------------------------------------------------------------------------------------------
 
-#Project Sprints
+# Project Sprints
 
-##Sprint 1
+## Sprint 1
 5/22/2019
 
 -Meet up to pick a project
@@ -37,7 +38,7 @@ News Article SpringBoot API
 -pick which part of the project each person would like to work on
 
 
-##Sprint 2
+## Sprint 2
 5/23/2019
 
 -have git repository done
@@ -47,7 +48,7 @@ News Article SpringBoot API
 -get Main project ideas cleared out and get the 3 separate projects cleared out
 -clear out Mule endpoints
 
-##Sprint 3
+## Sprint 3
 5/24/2019
 
 -have all requirements ready for major code sprint
@@ -55,24 +56,24 @@ News Article SpringBoot API
 -all API’s make first commit
 
 
-##Sprint 4
+## Sprint 4
 5/27/2019
 
 -all API’s have 80% of the code ready
 -12 test cases built, 4 test cases per API 
 
-##Sprint 5
+## Sprint 5
 5/28/2019
 
 -24 test cases built
 -all projects should be building correctly on Jenkings with minimum 90% of each API done
 
-##Sprint 6
+## Sprint 6
 5/29/2019
 
 -Code review, only cleaning up code commits such as deleting sysout lines adding comments etc. All functionality code is 100% done at this point.
 
-##Sprint 7
+## Sprint 7
 5/30/2019
 
 -work on presentation
@@ -80,9 +81,11 @@ News Article SpringBoot API
 -work on slides
 -practice the presentation several times
 
-#Project Coding Expectations/Standards
+------------------------------------------------------------------------------------------------------------------
 
-##These are important so that we are all on the same page and we will be able to provide a workable end result.
+# Project Coding Expectations/Standards
+
+## These are important so that we are all on the same page and we will be able to provide a workable end result.
 
 -all code should be done by 5/29/2019 no exceptions. The project should have all functionality done and should be a full working and done project
 
@@ -90,7 +93,9 @@ News Article SpringBoot API
 
 -commiting source code to git should be done daily
 
-#Git Command Line Instructions
+------------------------------------------------------------------------------------------------------------------
+
+# Git Command Line Instructions
 
 First use this command to create a new branch to the features your going to push to
 git checkout -b newbranch
@@ -104,7 +109,7 @@ git commit -m “message”
 The last thing is to your changes to the branch repository, merging to master will be taken care of by the git master or Jenkins
 git push origin newbranch
 
-#Git Eclipse Instructions
+# Git Eclipse Instructions
 
 First follow these steps to create a new branch to the features your going to push to
 Click Git icon on the upper right then under the git repositories tab right click the project name and select switch to New Branch
