@@ -38,7 +38,7 @@ News Article SpringBoot API
 - ranking system
 
 
-##Articles
+## Articles
 - raw text
 - sources
 - have already seen article
@@ -47,7 +47,7 @@ News Article SpringBoot API
 - join table with company mentions
 
 
-##Stock Info
+## Stock Info
 - realtime comaprisons between stocks
 - company names ticker names for company names
 - custom index and generate a report over a timeframe
