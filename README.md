@@ -98,16 +98,24 @@ News Article SpringBoot API
 # Git Command Line Instructions
 
 First use this command to create a new branch to the features your going to push to
+```
 git checkout -b newbranch
+```
 
 Then use this command for every file you changed
-git add ‘file that was changed’
+```
+git add 'file that was changed'
+```
 
 Then commit your changes and write a message that explains what you are commiting
+```
 git commit -m “message”
+```
 
 The last thing is to your changes to the branch repository, merging to master will be taken care of by the git master or Jenkins
+```
 git push origin newbranch
+```
 
 # Git Eclipse Instructions
 
