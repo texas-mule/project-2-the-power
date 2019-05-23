@@ -96,6 +96,10 @@ News Article SpringBoot API
 ------------------------------------------------------------------------------------------------------------------
 
 # Git Command Line Instructions
+Before commiting you will need pull the more recent changes type
+```
+git pull
+```
 
 First use this command to create a new branch to the features your going to push to
 ```
@@ -118,13 +122,14 @@ git push origin newbranch
 ```
 
 # Git Eclipse Instructions
+Before commiting you will need pull the more recent changes type
+-On the git Repositories tab right click your project name and select pull
 
 First follow these steps to create a new branch to the features your going to push to
-Click Git icon on the upper right then under the git repositories tab right click the project name and select switch to New Branch
-
-Under unstaged changes tab drag and drop the files from unstaged to staged put the files you have made changes to. 
-If you don't see any files that you changed on the unstaged files then on the upper right on top of the commit tab click the refresh button and this
+- Click Git icon on the upper right then under the git repositories tab right click the project name and select switch to New Branch
+- Under unstaged changes tab drag and drop the files from unstaged to staged put the files you have made changes to. 
+- If you don't see any files that you changed on the unstaged files then on the upper right on top of the commit tab click the refresh button and this
 will refresh the view.
-Write a message under the commit tab of the changes you made and then click the Commit and Push button.
+- Write a message under the commit tab of the changes you made and then click the Commit and Push button.
 
 
