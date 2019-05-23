@@ -10,21 +10,21 @@ Raj Mahal
 Sean Gordon
 
 Three SpringBoot API’s
--Stock Info
--User Info
--News Articles
+- Stock Info
+- User Info
+- News Articles
 
 Stock Info SpringBoot API
--Dylan Troutman
--Sean Gordon
+- Dylan Troutman
+- Sean Gordon
 
 User Info SpringBoot API
--Mohamad Khalifa
--Raj Mahal
+- Mohamad Khalifa
+- Raj Mahal
 
 News Article SpringBoot API
--Haydin 
--Andres Orellana
+- Haydin 
+- Andres Orellana
 
 ------------------------------------------------------------------------------------------------------------------
 
@@ -33,53 +33,53 @@ News Article SpringBoot API
 ## Sprint 1
 5/22/2019
 
--Meet up to pick a project
--split up into groups of two
--pick which part of the project each person would like to work on
+- Meet up to pick a project
+- split up into groups of two
+- pick which part of the project each person would like to work on
 
 
 ## Sprint 2
 5/23/2019
 
--have git repository done
--get git setup for all developers
--talk about git standards to commit
--setting up databases, each api can have their own type of database
--get Main project ideas cleared out and get the 3 separate projects cleared out
--clear out Mule endpoints
+- have git repository done
+- get git setup for all developers
+- talk about git standards to commit
+- setting up databases, each api can have their own type of database
+- get Main project ideas cleared out and get the 3 separate projects cleared out
+- clear out Mule endpoints
 
 ## Sprint 3
 5/24/2019
 
--have all requirements ready for major code sprint
--have jenkins setup and ready
--all API’s make first commit
+- have all requirements ready for major code sprint
+- have jenkins setup and ready
+- all API’s make first commit
 
 
 ## Sprint 4
 5/27/2019
 
--all API’s have 80% of the code ready
--12 test cases built, 4 test cases per API 
+- all API’s have 80% of the code ready
+- 12 test cases built, 4 test cases per API 
 
 ## Sprint 5
 5/28/2019
 
--24 test cases built
--all projects should be building correctly on Jenkings with minimum 90% of each API done
+- 24 test cases built
+- all projects should be building correctly on Jenkings with minimum 90% of each API done
 
 ## Sprint 6
 5/29/2019
 
--Code review, only cleaning up code commits such as deleting sysout lines adding comments etc. All functionality code is 100% done at this point.
+- Code review, only cleaning up code commits such as deleting sysout lines adding comments etc. All functionality code is 100% done at this point.
 
 ## Sprint 7
 5/30/2019
 
--work on presentation
--delegate the parts of the presentation
--work on slides
--practice the presentation several times
+- work on presentation
+- delegate the parts of the presentation
+- work on slides
+- practice the presentation several times
 
 ------------------------------------------------------------------------------------------------------------------
 
@@ -87,11 +87,11 @@ News Article SpringBoot API
 
 ## These are important so that we are all on the same page and we will be able to provide a workable end result.
 
--all code should be done by 5/29/2019 no exceptions. The project should have all functionality done and should be a full working and done project
+- all code should be done by 5/29/2019 no exceptions. The project should have all functionality done and should be a full working and done project
 
--focus on getting the project done rather than adding features that are pluses for the project
+- focus on getting the project done rather than adding features that are pluses for the project
 
--commiting source code to git should be done daily
+- commiting source code to git should be done daily
 
 ------------------------------------------------------------------------------------------------------------------
 
@@ -126,7 +126,5 @@ Under unstaged changes tab drag and drop the files from unstaged to staged put t
 If you don't see any files that you changed on the unstaged files then on the upper right on top of the commit tab click the refresh button and this
 will refresh the view.
 Write a message under the commit tab of the changes you made and then click the Commit and Push button.
-
-
 
 
