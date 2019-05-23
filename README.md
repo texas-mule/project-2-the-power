@@ -26,6 +26,37 @@ News Article SpringBoot API
 - Hayden Huffines 
 - Andres Orellana
 
+# Project API's Minimal Viable Product
+
+## User service
+- buy stock
+- add funds
+- add shares
+- remove shares
+- add custom index
+- credits
+- ranking system
+
+
+##Articles
+- raw text
+- sources
+- have already seen article
+- custom search filters
+- when the user last saw the article and when it was written
+- join table with company mentions
+
+
+##Stock Info
+- realtime comaprisons between stocks
+- company names ticker names for company names
+- custom index and generate a report over a timeframe
+- create a new index
+- associating a fair price to a stock
+- economic barameter
+
+
+
 ------------------------------------------------------------------------------------------------------------------
 
 # Project Sprints
@@ -61,6 +92,7 @@ News Article SpringBoot API
 
 - all API’s have 80% of the code ready
 - 12 test cases built, 4 test cases per API 
+- work out mule endpoints for user experience
 
 ## Sprint 5
 5/28/2019
@@ -88,6 +120,10 @@ News Article SpringBoot API
 ## These are important so that we are all on the same page and we will be able to provide a workable end result.
 
 - all code should be done by 5/29/2019 no exceptions. The project should have all functionality done and should be a full working and done project
+
+- prevent from steping on each others code
+
+- focus on your own project
 
 - focus on getting the project done rather than adding features that are pluses for the project
 
