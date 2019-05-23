@@ -23,7 +23,7 @@ User Info SpringBoot API
 - Raj Mahal
 
 News Article SpringBoot API
-- Haydin 
+- Hayden Huffines 
 - Andres Orellana
 
 ------------------------------------------------------------------------------------------------------------------
