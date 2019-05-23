@@ -86,19 +86,20 @@ News Article SpringBoot API
 - have jenkins setup and ready
 - all API’s make first commit
 
-
 ## Sprint 4
 5/27/2019
 
 - all API’s have 80% of the code ready
 - 12 test cases built, 4 test cases per API 
 - work out mule endpoints for user experience
+- start working on RAML documentation
 
 ## Sprint 5
 5/28/2019
 
 - 24 test cases built
 - all projects should be building correctly on Jenkings with minimum 90% of each API done
+- have RAML documentation done
 
 ## Sprint 6
 5/29/2019
