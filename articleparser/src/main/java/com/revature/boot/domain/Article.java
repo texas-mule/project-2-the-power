@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "artists")
-public class Artist {
+public class Article {
 	@Id @GeneratedValue(generator="artists_id_seq", strategy=GenerationType.IDENTITY)
 	private Long id;
 	
@@ -19,13 +19,13 @@ public class Artist {
 	@NotBlank
 	private String name;
 
-	public Artist(Long id, String name) {
+	public Article(Long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
 	}
 
-	public Artist() {
+	public Article() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

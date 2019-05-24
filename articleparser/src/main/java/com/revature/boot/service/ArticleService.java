@@ -7,25 +7,25 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revature.boot.domain.Artist;
-import com.revature.boot.repository.ArtistRepository;
+import com.revature.boot.domain.Article;
+import com.revature.boot.repository.ArticleRepository;
 
 @Service
-public class ArtistService {
+public class ArticleService {
 	@Autowired
-	ArtistRepository artistRepository;
+	ArticleRepository artistRepository;
 
-	public void setArtistRepository(ArtistRepository artistRepository) {
+	public void setArtistRepository(ArticleRepository artistRepository) {
 		this.artistRepository = artistRepository;
 	}
 	
 	@Transactional
-	public List<Artist> getAllArtists() {
+	public List<Article> getAllArtists() {
 		return this.artistRepository.findAll();
 	}
 	
 	@Transactional
-	public Artist saveNewArtist(Artist a) {
+	public Article saveNewArtist(Article a) {
 		return artistRepository.save(a);
 	}
 	

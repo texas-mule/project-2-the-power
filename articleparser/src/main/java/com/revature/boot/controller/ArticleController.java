@@ -18,22 +18,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.boot.domain.Artist;
-import com.revature.boot.service.ArtistService;
+import com.revature.boot.domain.Article;
+import com.revature.boot.service.ArticleService;
 
 @RestController
 @RequestMapping("/artists")
-public class ArtistController {
+public class ArticleController {
 	@Autowired
-	ArtistService artistService;
+	ArticleService artistService;
 	
 	@GetMapping
-	public List<Artist> getAll() {
+	public List<Article> getAll() {
 		return artistService.getAllArtists();
 	}
 	
 	@PostMapping
-	public Artist add(@RequestBody @Valid Artist a, Errors errors) {
+	public Article add(@RequestBody @Valid Article a, Errors errors) {
 		if(errors.hasErrors()) return null;
 		return artistService.saveNewArtist(a);
 	}

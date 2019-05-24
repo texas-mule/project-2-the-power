@@ -7,12 +7,12 @@ import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.revature.boot.domain.Artist;
+import com.revature.boot.domain.Article;
 
 @Repository
-public interface ArtistRepository extends JpaRepository<Artist, Long>{
-	Artist findByName(String name);
+public interface ArticleRepository extends JpaRepository<Article, Long>{
+	Article findByName(String name);
 	
 	@Transactional
-	List<Artist> findByIdBetween(Integer min, Integer max);
+	List<Article> findByIdBetween(Integer min, Integer max);
 }
