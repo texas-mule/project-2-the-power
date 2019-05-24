@@ -55,7 +55,18 @@ News Article SpringBoot API
 - associating a fair price to a stock
 - economic barameter
 
+------------------------------------------------------------------------------------------------------------------
 
+# API Ports
+
+## Gameification
+### Port: 7070
+
+## Stock Info
+### Port: 9090
+
+## Article Parser
+### Port: 5050
 
 ------------------------------------------------------------------------------------------------------------------
 
