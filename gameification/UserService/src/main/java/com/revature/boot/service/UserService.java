@@ -1,7 +1,7 @@
 package com.revature.boot.service;
 
 import java.util.List;
-
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -20,7 +20,10 @@ public class UserService {
 	public void setArtistRepository(UserRepository usertRepository) {
 		this.userRepository = userRepository;
 	}
-
+	
+	public Optional<User> getUser(Long id){
+		return this.userRepository.findById(id);
+	}
 	
 	@Transactional
 	public List<User> getAllUsers() {

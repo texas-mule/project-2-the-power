@@ -2,6 +2,7 @@ package com.revature.boot.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -32,6 +33,11 @@ public class UserController {
 	public List<User> getAll() {
 		return userService.getAllUsers();
 
+	}
+	
+	@GetMapping("/{id}")
+	public Optional<User> getUser(@PathVariable("id") Long id){
+		return userService.getUser(id);
 	}
 	
 	@PostMapping
