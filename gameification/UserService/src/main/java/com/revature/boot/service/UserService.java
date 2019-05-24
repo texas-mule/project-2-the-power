@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revature.boot.domain.Artist;
+import com.revature.boot.domain.User;
 import com.revature.boot.repository.ArtistRepository;
 import com.revature.boot.repository.UserRepository;
 
