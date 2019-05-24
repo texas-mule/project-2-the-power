@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.boot.domain.Artist;
-import com.revature.boot.service.ArtistService;
+import com.revature.boot.service.UserService;
 
 @RestController
 @RequestMapping("/artists")
 public class ArtistController {
 	@Autowired
-	ArtistService artistService;
+	UserService artistService;
 	
 	@GetMapping
 	public List<Artist> getAll() {

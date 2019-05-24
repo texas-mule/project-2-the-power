@@ -9,29 +9,30 @@ import org.springframework.stereotype.Service;
 
 import com.revature.boot.domain.Artist;
 import com.revature.boot.repository.ArtistRepository;
+import com.revature.boot.repository.UserRepository;
 
 @Service
-public class ArtistService {
+public class UserService {
 	@Autowired
-	ArtistRepository artistRepository;
+	UserRepository userRepository;
 
-	public void setArtistRepository(ArtistRepository artistRepository) {
-		this.artistRepository = artistRepository;
+	public void setArtistRepository(UserRepository usertRepository) {
+		this.userRepository = userRepository;
 	}
 	
 	@Transactional
-	public List<Artist> getAllArtists() {
-		return this.artistRepository.findAll();
+	public List<User> getAllUsers() {
+		return this.userRepository.findAll();
 	}
 	
 	@Transactional
-	public Artist saveNewArtist(Artist a) {
-		return artistRepository.save(a);
+	public User saveNewArtist(User user) {
+		return user.save(user);
 	}
 	
 	@Transactional
 	public void deleteById(Long id) {
-		artistRepository.deleteById(id);
+		userRepository.deleteById(id);
 	}
 
 }
