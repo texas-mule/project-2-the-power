@@ -25,22 +25,28 @@ import com.revature.boot.service.UserService;
 @RequestMapping("/users")
 public class UserController {
 	@Autowired
-	UserService artistService;
+
+	UserService userService;
 	
 	@GetMapping
 	public List<User> getAll() {
-		return artistService.getAllUsers();
+		return userService.getAllUsers();
+
 	}
 	
 	@PostMapping
 	public User add(@RequestBody @Valid User a, Errors errors) {
 		if(errors.hasErrors()) return null;
-		return artistService.saveNewArtist(a);
+    
+		return userService.saveNewArtist(a);
+
 	}
 	
 	@DeleteMapping("/{id}")
 	public String deleteById(@PathVariable("id") Long id) {
-		artistService.deleteById(id);
+
+		userService.deleteById(id);
+
 		return "deleted!";
 	}
 	

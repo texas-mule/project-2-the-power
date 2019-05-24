@@ -26,9 +26,12 @@ public class User {
 	private double previousFunds;
 	private double priorProfitMargin;
 	private double currentProfitMargin;
-	
-	public User() {
+	public User(){
 		super();
+	}
+	public User(Long id, String name) {
+		this.id=id;
+		this.username=name;
 	}
 
 	public User(Long id, String username, String password) {
