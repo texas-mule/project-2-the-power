@@ -23,6 +23,7 @@ public class User {
 	@NotBlank
 	private String password;
 	private double funds;
+	private double previousFunds;
 	private double priorProfitMargin;
 	private double currentProfitMargin;
 	
@@ -35,7 +36,7 @@ public class User {
 		this.id = id;
 		this.username = username;
 		this.password = password;
-		this.funds = 0;
+		this.funds = 10000;
 		this.priorProfitMargin = 0;
 		this.currentProfitMargin = 0;
 	}
@@ -68,7 +69,6 @@ public class User {
 		this.password = password;
 	}
 
-
 	public double getFunds() {
 		return funds;
 	}
@@ -79,10 +79,17 @@ public class User {
 	}
 
 
+	public double getPreviousFunds() {
+		return previousFunds;
+	}
+
+	public void setPreviousFunds(double previousFunds) {
+		this.previousFunds = previousFunds;
+	}
+
 	public double getPriorProfitMargin() {
 		return priorProfitMargin;
 	}
-
 
 	public void setPriorProfitMargin(double priorProfitMargin) {
 		this.priorProfitMargin = priorProfitMargin;
@@ -106,6 +113,16 @@ public class User {
 		this.username = username;
 	}
 
+	public double growthPercentage(){
+		double currentDifference = this.currentProfitMargin - this.priorProfitMargin;
+		return (currentDifference/this.priorProfitMargin)*100;
+	}
+	
+	public double growthNormalizer(){
+		double growthPercentage = this.growthPercentage();
+		return growthPercentage/(this.funds/this.previousFunds);
+	}
+		
 	@Override
 	public String toString() {
 		return "Artist [id=" + id + ", name=" + this.username + "]";
