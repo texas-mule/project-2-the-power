@@ -14,5 +14,5 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	User findByName(String name);
 	
 	@Transactional
-	List<Usert> findByIdBetween(Integer min, Integer max);
+	List<User> findByIdBetween(Integer min, Integer max);
 }
