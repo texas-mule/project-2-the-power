@@ -29,15 +29,20 @@ public class UserController {
 
 	UserService userService;
 	
-	@GetMapping
-	public List<User> getAll() {
-		return userService.getAllUsers();
+	@GetMapping("/")
+	public String sayHello() {
+		return "Welcome to user route";
 
 	}
 	
-	@GetMapping("/{id}")
-	public Optional<User> getUser(@PathVariable("id") Long id){
+	@GetMapping("/getUser/{id}")
+	public Optional<User> getUser(@PathVariable Long id){
 		return userService.getUser(id);
+	}
+	
+	@GetMapping("/getUserByName/{username}")
+	public User getUser(@PathVariable String username){
+		return userService.getUserByName(username);
 	}
 	
 	@PostMapping
