@@ -1,13 +1,17 @@
 package com.revature.boot.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -51,6 +55,22 @@ public class UserController {
     
 		return userService.saveNewArtist(user);
 
+	}
+	
+	@PostMapping(path = "/newUserCreation", consumes = "application/json", produces = "application/json")
+	public User addNewUser(@RequestBody @Valid String credentials, Errors errors) {
+		if(errors.hasErrors()) return null;
+		String username;
+		String password;
+		String[] parsedValues = credentials.split(":|,|\"|username|password|\\{|\\}|\\t|\\s+");
+		ArrayList<String> values = new ArrayList<String>();
+		for(String arrayElement: parsedValues){
+			if(arrayElement != null && !arrayElement.equals(""))
+				values.add(arrayElement);
+		}
+		
+ 		User user = new User(values.get(0), values.get(1));
+		return userService.saveNewUserUnamePword(user);
 	}
 	
 	@DeleteMapping("/deleteById/{id}")

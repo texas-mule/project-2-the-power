@@ -35,9 +35,8 @@ public class User {
 		this.username=name;
 	}
 
-	public User(Long id, String username, String password) {
+	public User(String username, String password) {
 		super();
-		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.funds = 10000;
