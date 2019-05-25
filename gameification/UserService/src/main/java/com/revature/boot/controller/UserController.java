@@ -45,15 +45,15 @@ public class UserController {
 		return userService.getUserByName(username);
 	}
 	
-	@PostMapping
-	public User add(@RequestBody @Valid User a, Errors errors) {
+	@PostMapping(path = "/newUser", consumes = "application/json", produces = "application/json")
+	public User addNewUser(@RequestBody @Valid User user, Errors errors) {
 		if(errors.hasErrors()) return null;
     
-		return userService.saveNewArtist(a);
+		return userService.saveNewArtist(user);
 
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/deleteById/{id}")
 	public String deleteById(@PathVariable("id") Long id) {
 
 		userService.deleteById(id);
