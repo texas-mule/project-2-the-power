@@ -1,5 +1,7 @@
 package com.revature.boot.domain;
 
+import java.util.ArrayList;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,6 +29,8 @@ public class User {
 	private double previous_funds;
 	private double previous_profit_margin;
 	private double current_profit_margin;
+	//ArrayList<CustomIndex> custom_indexes_list;
+	private String custom_indexes;
 	public User(){
 		super();
 	}
@@ -41,12 +45,13 @@ public class User {
 		this.password = password;
 		this.funds = 10000;
 		this.previous_funds = 0;
+		this.custom_indexes = "";
 		this.current_profit_margin = 0;
 		this.previous_profit_margin = 0;
 	}
 
 	
-	public User(Long id, String username, String password, double funds, double previous_funds,double previous_profit_margin, double current_profit_margin) {
+	public User(Long id, String username, String password, double funds, double previous_funds,double previous_profit_margin, double current_profit_margin, String custom_indexes) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -55,6 +60,7 @@ public class User {
 		this.previous_funds = previous_funds;
 		this.current_profit_margin = current_profit_margin;
 		this.previous_profit_margin = previous_profit_margin;
+		this.custom_indexes = custom_indexes;
 	}
 
 	public Long getId() {
@@ -110,6 +116,23 @@ public class User {
 		this.current_profit_margin = currentProfitMargin;
 	}
 
+	public String getCustomIndexes() {
+		return custom_indexes;
+	}
+	
+	public void setCustomIndexes(String custom_indexes) {
+		this.custom_indexes = custom_indexes;
+	}
+	
+	public void addCustomIndexes(String newIndex){
+		//Check for empty
+		if(this.custom_indexes.equals("")){
+			this.custom_indexes=newIndex;
+		}else{
+			this.custom_indexes=this.custom_indexes+","+newIndex;
+		}
+	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -127,10 +150,14 @@ public class User {
 		double growthPercentage = this.growthPercentage();
 		return growthPercentage/(this.funds/this.previous_funds);
 	}
+	
+	public String returnCustomIndexes(){
+		return "{\"key\":["+this.custom_indexes+"]}";
+	}
 		
 	@Override
 	public String toString() {
-		return "Artist [id=" + id + ", name=" + this.username + "]";
+		return "User [id=" + id + ", name=" + this.username + "]";
 	}
 
 }
