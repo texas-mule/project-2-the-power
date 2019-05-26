@@ -11,7 +11,8 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Table(name = "users")
 public class User {
-	@Id @GeneratedValue(generator="users_id_seq", strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(generator="users_id_seq", strategy=GenerationType.IDENTITY)
 	private Long id;
 	
 	@Pattern(regexp="[a-zA-Z]+")
@@ -23,9 +24,9 @@ public class User {
 	@NotBlank
 	private String password;
 	private double funds;
-	private double previousFunds;
-	private double priorProfitMargin;
-	private double currentProfitMargin;
+	private double previous_funds;
+	private double previous_profit_margin;
+	private double current_profit_margin;
 	public User(){
 		super();
 	}
@@ -34,25 +35,26 @@ public class User {
 		this.username=name;
 	}
 
-	public User(Long id, String username, String password) {
+	public User(String username, String password) {
 		super();
-		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.funds = 10000;
-		this.priorProfitMargin = 0;
-		this.currentProfitMargin = 0;
+		this.previous_funds = 0;
+		this.current_profit_margin = 0;
+		this.previous_profit_margin = 0;
 	}
 
 	
-	public User(Long id, String username, String password, double funds, double priorProfitMargin, double currentProfitMargin) {
+	public User(Long id, String username, String password, double funds, double previous_funds,double previous_profit_margin, double current_profit_margin) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.funds = funds;
-		this.priorProfitMargin = priorProfitMargin;
-		this.currentProfitMargin = currentProfitMargin;
+		this.previous_funds = previous_funds;
+		this.current_profit_margin = current_profit_margin;
+		this.previous_profit_margin = previous_profit_margin;
 	}
 
 	public Long getId() {
@@ -83,29 +85,29 @@ public class User {
 
 
 	public double getPreviousFunds() {
-		return previousFunds;
+		return previous_funds;
 	}
 
 	public void setPreviousFunds(double previousFunds) {
-		this.previousFunds = previousFunds;
+		this.previous_funds = previousFunds;
 	}
 
-	public double getPriorProfitMargin() {
-		return priorProfitMargin;
+	public double getPreviousProfitMargin() {
+		return previous_profit_margin;
 	}
 
-	public void setPriorProfitMargin(double priorProfitMargin) {
-		this.priorProfitMargin = priorProfitMargin;
+	public void setPreviousProfitMargin(double priorProfitMargin) {
+		this.previous_profit_margin = priorProfitMargin;
 	}
 
 
 	public double getCurrentProfitMargin() {
-		return currentProfitMargin;
+		return current_profit_margin;
 	}
 
 
 	public void setCurrentProfitMargin(double currentProfitMargin) {
-		this.currentProfitMargin = currentProfitMargin;
+		this.current_profit_margin = currentProfitMargin;
 	}
 
 	public String getUsername() {
@@ -117,13 +119,13 @@ public class User {
 	}
 
 	public double growthPercentage(){
-		double currentDifference = this.currentProfitMargin - this.priorProfitMargin;
-		return (currentDifference/this.priorProfitMargin)*100;
+		double currentDifference = this.current_profit_margin - this.previous_profit_margin;
+		return (currentDifference/this.previous_profit_margin)*100;
 	}
 	
 	public double growthNormalizer(){
 		double growthPercentage = this.growthPercentage();
-		return growthPercentage/(this.funds/this.previousFunds);
+		return growthPercentage/(this.funds/this.previous_funds);
 	}
 		
 	@Override

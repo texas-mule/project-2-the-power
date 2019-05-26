@@ -1,6 +1,7 @@
 package com.revature.boot.service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 import javax.transaction.Transactional;
@@ -17,10 +18,22 @@ public class UserService {
 	@Autowired
 	UserRepository userRepository;
 
-	public void setArtistRepository(UserRepository usertRepository) {
+	public void setArtistRepository(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
-
+	
+	@Transactional
+	public Optional<User> getUser(Long id){
+		System.out.println("ID OF LOOKUP");
+		System.out.println("ID: "+id);
+		return this.userRepository.findById(id);
+	}
+	
+	public User getUserByName(String username){
+		System.out.println("username OF LOOKUP");
+		System.out.println("username: "+username);
+		return this.userRepository.findByUsername(username);
+	}
 	
 	@Transactional
 	public List<User> getAllUsers() {
@@ -29,6 +42,11 @@ public class UserService {
 	
 	@Transactional
 	public User saveNewArtist(User user) {
+		return userRepository.save(user);
+	}
+	
+	@Transactional
+	public User saveNewUserUnamePword(User user) {
 		return userRepository.save(user);
 	}
 	
