@@ -56,6 +56,11 @@ public class UserService {
 	public List<User> getAllUsers() {
 		return (List<User>) this.userRepository.findAll();
 	}
+
+	@Transactional
+	public User saveUser(User user) {
+		return userRepository.save(user);
+	}
 	
 	@Transactional
 	public User saveNewUser(User user) {
@@ -70,7 +75,6 @@ public class UserService {
 	public User updateUser(User user){
 		System.out.println("USER ID BEING SAVED: "+user.getId());
 		return userRepository.save(user);
-		//userRepository.
 	}
 	
 	@Transactional

@@ -82,23 +82,45 @@ public class UserController {
 		return "deleted!";
 	}
 
+	/*User Funds*/
+	@GetMapping("/addFunds/{id}/{amount}")
+	public User addFunds(@PathVariable Long id, @PathVariable double amount){
+		System.out.println("Amount: "+amount);
+		User user = userService.getUserById(id);
+		user.addFunds(amount);
+		return userService.saveUser(user);
+	}
+	/* End of User Funds*/
+	
+	/*PORTFOLIO*/
+	
+	/*END OF PORTFOLIO*/
+	@RequestMapping(value="/{id}/portfolio", method = RequestMethod.POST)
+	public void addPortfolio(@PathVariable Long id, @RequestParam(value="ticker") String[] tickers, @RequestParam(value="amount") int[] amounts){
+		for(String ticker: tickers ){
+			System.out.println("Ticker: "+ticker);
+		}
+		for(int amount: amounts ){
+			System.out.println("Amount: "+amount);
+		}
+		
+	}
+	
 	/*CUSTOM INDEXES*/
 	
 	//Gets users custom index
 	@GetMapping("/{id}/getCustomIndexes")
 	public String getCustomIndex(@PathVariable Long id){
+		User user = userService.getUserById(id);
 		String returnString = userService.getUserCustomIndexById(id);
 		if(returnString.equals(null) || returnString.equals("")){
 			return "NULL";
 		}else{
-			return returnString;
+			return user.returnCustomIndexes();
 		}
 	}
 	
 	//Add a custom index
-	//We have all stocks from path
-	//make an array of indexes
-	//add those to the array
 	@RequestMapping(value="/{id}/addindex", method = RequestMethod.POST)
 	public User addIndex(@PathVariable Long id, @RequestParam(value="stock") String[] stocks){
 		System.out.println("ID: "+id);
@@ -110,21 +132,14 @@ public class UserController {
 			stockIndexList.add(newStockIndex);
 			System.out.println(newStockIndex.returnIndex());
 		}
-//		System.out.println("CHECKING STOCKLIST NOW!");
-//		for(StockIndex i : stockIndexList){
-//			System.out.println(i.returnIndex());
-//		}
 		
 		CustomIndex newCustomIndex = new CustomIndex(stockIndexList);
-		//System.out.println(newCustomIndex.returnCustomIndex());
 		user.addCustomIndexes(newCustomIndex.returnCustomIndex());
 		System.out.println(user.returnCustomIndexes());
-		//user.setCustomIndexes(user.returnCustomIndexes());
 		return userService.updateUser(user);
 	}
+	/*END OF CUSTOM INDEXES*/
 	
-	
-	/*End of Custom Indexes*/
 	@GetMapping("/oops")
 	public void oops() throws IOException {
 		throw new IOException();
