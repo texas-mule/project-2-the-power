@@ -18,15 +18,21 @@ public class UserService {
 	@Autowired
 	UserRepository userRepository;
 
-	public void setArtistRepository(UserRepository userRepository) {
+	public void setUserRepository(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 	
-	@Transactional
-	public Optional<User> getUser(Long id){
+
+	public User getUserById(Long id){
 		System.out.println("ID OF LOOKUP");
 		System.out.println("ID: "+id);
-		return this.userRepository.findById(id);
+		Optional<User> user =  this.userRepository.findById(id);
+		if(user == null){
+			User myUser = new User();
+			return myUser;
+		}
+		User myUser = user.get();
+		return myUser;
 	}
 	
 	public User getUserByName(String username){
@@ -35,19 +41,36 @@ public class UserService {
 		return this.userRepository.findByUsername(username);
 	}
 	
+	public String getUserCustomIndexById(Long id){
+		Optional<User> user = this.userRepository.findById(id);
+		String customIndex = "";
+		User currentUser;
+		if(user != null){
+			currentUser = user.get();
+			return currentUser.getCustomIndexes();
+		}
+		return "NULL";
+	}
+	
 	@Transactional
 	public List<User> getAllUsers() {
 		return (List<User>) this.userRepository.findAll();
 	}
 	
 	@Transactional
-	public User saveNewArtist(User user) {
+	public User saveNewUser(User user) {
 		return userRepository.save(user);
 	}
 	
 	@Transactional
 	public User saveNewUserUnamePword(User user) {
 		return userRepository.save(user);
+	}
+	
+	public User updateUser(User user){
+		System.out.println("USER ID BEING SAVED: "+user.getId());
+		return userRepository.save(user);
+		//userRepository.
 	}
 	
 	@Transactional

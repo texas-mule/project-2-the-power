@@ -1,5 +1,6 @@
 package com.revature.boot.controller;
 
+import com.revature.boot.domain.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,8 +43,8 @@ public class UserController {
 	}
 	
 	@GetMapping("/getUser/{id}")
-	public Optional<User> getUser(@PathVariable Long id){
-		return userService.getUser(id);
+	public User getUser(@PathVariable Long id){
+		return userService.getUserById(id);
 	}
 	
 	@GetMapping("/getUserByName/{username}")
@@ -53,7 +56,7 @@ public class UserController {
 	public User addNewUser(@RequestBody @Valid User user, Errors errors) {
 		if(errors.hasErrors()) return null;
     
-		return userService.saveNewArtist(user);
+		return userService.saveNewUser(user);
 
 	}
 	
@@ -75,12 +78,53 @@ public class UserController {
 	
 	@DeleteMapping("/deleteById/{id}")
 	public String deleteById(@PathVariable("id") Long id) {
-
 		userService.deleteById(id);
-
 		return "deleted!";
 	}
+
+	/*CUSTOM INDEXES*/
 	
+	//Gets users custom index
+	@GetMapping("/{id}/getCustomIndexes")
+	public String getCustomIndex(@PathVariable Long id){
+		String returnString = userService.getUserCustomIndexById(id);
+		if(returnString.equals(null) || returnString.equals("")){
+			return "NULL";
+		}else{
+			return returnString;
+		}
+	}
+	
+	//Add a custom index
+	//We have all stocks from path
+	//make an array of indexes
+	//add those to the array
+	@RequestMapping(value="/{id}/addindex", method = RequestMethod.POST)
+	public User addIndex(@PathVariable Long id, @RequestParam(value="stock") String[] stocks){
+		System.out.println("ID: "+id);
+		User user = userService.getUserById(id);
+		ArrayList<StockIndex> stockIndexList = new ArrayList<StockIndex>();
+		StockIndex newStockIndex;
+		for(String stock: stocks){
+			newStockIndex = new StockIndex(stock);
+			stockIndexList.add(newStockIndex);
+			System.out.println(newStockIndex.returnIndex());
+		}
+//		System.out.println("CHECKING STOCKLIST NOW!");
+//		for(StockIndex i : stockIndexList){
+//			System.out.println(i.returnIndex());
+//		}
+		
+		CustomIndex newCustomIndex = new CustomIndex(stockIndexList);
+		//System.out.println(newCustomIndex.returnCustomIndex());
+		user.addCustomIndexes(newCustomIndex.returnCustomIndex());
+		System.out.println(user.returnCustomIndexes());
+		//user.setCustomIndexes(user.returnCustomIndexes());
+		return userService.updateUser(user);
+	}
+	
+	
+	/*End of Custom Indexes*/
 	@GetMapping("/oops")
 	public void oops() throws IOException {
 		throw new IOException();
