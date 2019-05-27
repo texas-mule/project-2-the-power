@@ -1,4 +1,4 @@
-package com.project2.stonkservice;
+package com.project2.stonkService;
 
 public class StonkService {
 

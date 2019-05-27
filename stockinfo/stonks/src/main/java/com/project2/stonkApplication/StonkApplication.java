@@ -1,7 +1,6 @@
-package com.project2.stonks;
+package com.project2.stonkApplication;
 
 import java.util.Arrays;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,10 +8,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class StonksApplication {
+public class StonkApplication {
 
 	public static void main(String[] args) {
-        SpringApplication.run(StonksApplication.class, args);
+        SpringApplication.run(StonkApplication.class, args);
     }
 
     @Bean
