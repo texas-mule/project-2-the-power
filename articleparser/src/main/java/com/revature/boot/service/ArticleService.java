@@ -13,25 +13,25 @@ import com.revature.boot.repository.ArticleRepository;
 @Service
 public class ArticleService {
 	@Autowired
-	ArticleRepository artistRepository;
+	ArticleRepository articleRepository;
 
-	public void setArtistRepository(ArticleRepository artistRepository) {
-		this.artistRepository = artistRepository;
+	public void setArticleRepository(ArticleRepository ArticleRepository) {
+		this.articleRepository = articleRepository;
 	}
 	
 	@Transactional
-	public List<Article> getAllArtists() {
-		return this.artistRepository.findAll();
+	public List<Article> getAllArticles() {
+		return this.articleRepository.findAll();
 	}
 	
 	@Transactional
-	public Article saveNewArtist(Article a) {
-		return artistRepository.save(a);
+	public Article saveNewArticle(Article a) {
+		return articleRepository.save(a);
 	}
 	
 	@Transactional
 	public void deleteById(Long id) {
-		artistRepository.deleteById(id);
+		articleRepository.deleteById(id);
 	}
 
 }

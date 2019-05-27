@@ -25,22 +25,37 @@ import com.revature.boot.service.ArticleService;
 @RequestMapping("/artists")
 public class ArticleController {
 	@Autowired
-	ArticleService artistService;
+	ArticleService articleService;
 	
 	@GetMapping
 	public List<Article> getAll() {
-		return artistService.getAllArtists();
+		return articleService.getAllArticles();
+	}
+	
+	@GetMapping("/savedqueries/{userid}")
+	public void getSavedQueries(@PathVariable("userid") String userid){
+		
+	}
+	
+	@GetMapping("/searchcompany/{companyname}")
+	public void searchCompany(@PathVariable("companyname") String companyname){
+		
+	}
+	
+	@PostMapping("/searchkeywords")
+	public void searchKeywords(){
+		
 	}
 	
 	@PostMapping
 	public Article add(@RequestBody @Valid Article a, Errors errors) {
 		if(errors.hasErrors()) return null;
-		return artistService.saveNewArtist(a);
+		return articleService.saveNewArticle(a);
 	}
 	
 	@DeleteMapping("/{id}")
 	public String deleteById(@PathVariable("id") Long id) {
-		artistService.deleteById(id);
+		articleService.deleteById(id);
 		return "deleted!";
 	}
 	
