@@ -85,20 +85,62 @@ public class StonkController {
 	       return "hello " + name + " you did it!";
 	   }
 	   
+	   @SuppressWarnings("unchecked")
 	   @GetMapping("/customindex/{timeframe}")
 	   @ResponseBody
-	   public String GenerateReport(@PathVariable String timeframe) // int is placeholder for object
+	   public int GenerateReport(@PathVariable String timeframe) // int is placeholder for object
 	   {
-		   //
-		   //for each ticker, get summary from
-		   // /stock/{name}/{id}
-		   //
-		   //
-		   //
+		   String Test = "{ \"portfolio\" : ["
+		   		+ "{ \"ticker\": \"AAPL\","
+		   		+ "	\"amount\": 20}, "
+		   		+ "{ \"ticker\": \"WMT\","
+		   		+ "	\"amount\": 20}, "
+		   		+ "] }";
 		   
+		   JSONParser parser = new JSONParser();
+		   try {
+			JSONObject json = (JSONObject) parser.parse(Test);
+			JSONArray details = (JSONArray) json.get("portfolio");
+			
+			System.out.println(json.toString());
+			List<String> stockInfo = new ArrayList<>();
+			
+			HashMap<String, String> stockKeyValue = new HashMap<String, String>();
+			
+			
+			double testint[] = {0,0,0,0};
+		
+			details.forEach( timeseries ->
+			{
+				JSONObject parse = (JSONObject) timeseries;
+				
+				for(int i = 0; i<parse.size(); i++)
+				{
+					String key = parse.keySet().toArray()[i].toString();
+					
+					stockKeyValue.put(key, parse.get(key).toString());
+					stockInfo.add(i, parse.get(key).toString());
+					
+				}
+				testint[0]+=ListDailyMovement(stockKeyValue.get("ticker"),5);
+				
+				System.out.println(stockKeyValue.toString());
+
+			});
+			
+			System.out.println(testint[0]/details.size());
+
+			
+
+	   	} catch (Exception e) {
+
+			return -999;
+		}
+			
 		   
-		   return "this is a generated report for " + timeframe + " units";
+		   return 1;
 	   }
+
 
 	   @SuppressWarnings("unchecked")
 	   @GetMapping("/Dailyhigh/{stock}/{days}")
