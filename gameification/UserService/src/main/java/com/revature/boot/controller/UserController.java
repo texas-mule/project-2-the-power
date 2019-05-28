@@ -33,7 +33,6 @@ import com.revature.boot.service.UserService;
 @RequestMapping("/users")
 public class UserController {
 	@Autowired
-
 	UserService userService;
 	
 	@GetMapping("/")
@@ -42,15 +41,15 @@ public class UserController {
 
 	}
 	
-	@GetMapping("/getUser/{id}")
-	public User getUser(@PathVariable Long id){
-		return userService.getUserById(id);
-	}
-	
-	@GetMapping("/getUserByName/{username}")
+	@GetMapping("/getUser/{username}")
 	public User getUser(@PathVariable String username){
 		return userService.getUserByName(username);
 	}
+	
+//	@GetMapping("/getUserByName/{username}")
+//	public User getUser(@PathVariable String username){
+//		return userService.getUserByName(username);
+//	}
 	
 	@PostMapping(path = "/newUser", consumes = "application/json", produces = "application/json")
 	public User addNewUser(@RequestBody @Valid User user, Errors errors) {
@@ -76,33 +75,62 @@ public class UserController {
 		return userService.saveNewUserUnamePword(user);
 	}
 	
-	@DeleteMapping("/deleteById/{id}")
-	public String deleteById(@PathVariable("id") Long id) {
-		userService.deleteById(id);
+	@DeleteMapping("/deleteById/{username}")
+	public String deleteById(@PathVariable("username") String username) {
+		userService.deleteUserByName(username);
 		return "deleted!";
 	}
 
+	/*User Funds*/
+	@GetMapping("/{username}/addFunds/{amount}")
+	public User addFunds(@PathVariable String username, @PathVariable double amount){
+		System.out.println("Amount: "+amount);
+		User user = userService.getUserByName(username);
+		user.addFunds(amount);
+		return userService.saveUser(user);
+	}
+	/* End of User Funds*/
+	
+	/*PORTFOLIO*/
+	
+
+	@RequestMapping(value="/{username}/portfolio", method = RequestMethod.POST)
+	public void addPortfolio(@PathVariable String username, @RequestParam(value="ticker") String[] tickers, @RequestParam(value="amount") int[] amounts){
+		for(String ticker: tickers ){
+			System.out.println("Ticker: "+ticker);
+		}
+		for(int amount: amounts ){
+			System.out.println("Amount: "+amount);
+		}
+		
+	}
+	
+	@RequestMapping(value="/{id}/portfolio", method = RequestMethod.GET)
+	public void getPortfolio(@PathVariable Long id){
+		User user = userService.getUserById(id);
+		
+	}
+	
+	/*END OF PORTFOLIO*/
+	
 	/*CUSTOM INDEXES*/
 	
 	//Gets users custom index
-	@GetMapping("/{id}/getCustomIndexes")
-	public String getCustomIndex(@PathVariable Long id){
-		String returnString = userService.getUserCustomIndexById(id);
-		if(returnString.equals(null) || returnString.equals("")){
-			return "NULL";
+	@GetMapping("/{username}/getCustomIndexes")
+	public String getCustomIndex(@PathVariable String username){
+		User user = userService.getUserByName(username);
+		String returnString = userService.getUserCustomIndexByName(username);
+		if(returnString.equals("NULL USER") || returnString.equals("")){
+			return "NULL USER";
 		}else{
-			return returnString;
+			return user.returnCustomIndexes();
 		}
 	}
 	
 	//Add a custom index
-	//We have all stocks from path
-	//make an array of indexes
-	//add those to the array
-	@RequestMapping(value="/{id}/addindex", method = RequestMethod.POST)
-	public User addIndex(@PathVariable Long id, @RequestParam(value="stock") String[] stocks){
-		System.out.println("ID: "+id);
-		User user = userService.getUserById(id);
+	@RequestMapping(value="/{username}/addindex", method = RequestMethod.POST)
+	public User addIndex(@PathVariable String username, @RequestParam(value="stock") String[] stocks){
+		User user = userService.getUserByName(username);
 		ArrayList<StockIndex> stockIndexList = new ArrayList<StockIndex>();
 		StockIndex newStockIndex;
 		for(String stock: stocks){
@@ -110,21 +138,14 @@ public class UserController {
 			stockIndexList.add(newStockIndex);
 			System.out.println(newStockIndex.returnIndex());
 		}
-//		System.out.println("CHECKING STOCKLIST NOW!");
-//		for(StockIndex i : stockIndexList){
-//			System.out.println(i.returnIndex());
-//		}
 		
 		CustomIndex newCustomIndex = new CustomIndex(stockIndexList);
-		//System.out.println(newCustomIndex.returnCustomIndex());
 		user.addCustomIndexes(newCustomIndex.returnCustomIndex());
 		System.out.println(user.returnCustomIndexes());
-		//user.setCustomIndexes(user.returnCustomIndexes());
 		return userService.updateUser(user);
 	}
+	/*END OF CUSTOM INDEXES*/
 	
-	
-	/*End of Custom Indexes*/
 	@GetMapping("/oops")
 	public void oops() throws IOException {
 		throw new IOException();
