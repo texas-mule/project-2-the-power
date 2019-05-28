@@ -258,7 +258,7 @@ public class StonkController {
 	   }
 	   
 	   
-	   @GetMapping("/gradeIndex/{id}")
+	   @GetMapping("/gradeIndex/")
 	   public void GetCustomIndex(@RequestParam String id)
 	   {
 		   
