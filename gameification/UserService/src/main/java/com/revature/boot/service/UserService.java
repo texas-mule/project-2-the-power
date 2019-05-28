@@ -41,15 +41,20 @@ public class UserService {
 		return this.userRepository.findByUsername(username);
 	}
 	
-	public String getUserCustomIndexById(Long id){
-		Optional<User> user = this.userRepository.findById(id);
-		String customIndex = "";
-		User currentUser;
+	public void deleteUserByName(String username){
+		System.out.println("username OF LOOKUP");
+		System.out.println("username: "+username);
+		User user = userRepository.findByUsername(username);
+		this.userRepository.delete(user);
+	}
+	
+	public String getUserCustomIndexByName(String username){
+		User user = this.userRepository.findByUsername(username);
+		//String customIndex = "";
 		if(user != null){
-			currentUser = user.get();
-			return currentUser.getCustomIndexes();
+			return user.getCustomIndexes();
 		}
-		return "NULL";
+		return "NULL USER";
 	}
 	
 	@Transactional

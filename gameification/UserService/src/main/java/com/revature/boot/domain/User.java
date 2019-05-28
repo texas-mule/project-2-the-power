@@ -1,6 +1,8 @@
 package com.revature.boot.domain;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+
+import com.google.gson.Gson;
 
 @Entity
 @Table(name = "users")
@@ -30,6 +34,7 @@ public class User {
 	private double previous_profit_margin;
 	private double current_profit_margin;
 	private String custom_indexes;
+	private String portfolio;
 
 
 	public User(){
@@ -49,10 +54,11 @@ public class User {
 		this.custom_indexes = "";
 		this.current_profit_margin = 0;
 		this.previous_profit_margin = 0;
+		this.portfolio = "";
 	}
 
 
-	public User(Long id, String username, String password, double funds, double previous_funds,double previous_profit_margin, double current_profit_margin, String custom_indexes) {
+	public User(Long id, String username, String password, double funds, double previous_funds,double previous_profit_margin, double current_profit_margin, String custom_indexes, String portfolio) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -62,6 +68,7 @@ public class User {
 		this.current_profit_margin = current_profit_margin;
 		this.previous_profit_margin = previous_profit_margin;
 		this.custom_indexes = custom_indexes;
+		this.portfolio = portfolio;
 	}
 
 	public Long getId() {
@@ -148,6 +155,32 @@ public class User {
 		}
 	}
 
+	
+	
+	/*PORTFOLIO METHODS*/
+	public String getPortfolio() {
+		return ""+portfolio+"";
+	}
+	public void setPortfolio(String portfolio) {
+		this.portfolio = portfolio;
+	}
+	public void returnTestPortfolioData(){
+		Map jsonJavaRootObject = new Gson().fromJson(this.portfolio, Map.class);
+		System.out.println(jsonJavaRootObject.get("portfolio"));
+	}
+	public void addToPortfolio(String stocksToAppend){
+		//Add functionality to append 
+		//this.portfolio = this.portfolio+","+stocksToAppend;
+		
+	}
+	
+	public void removeFromPortfolio(String stocksToAppend){
+		//ADD CODE TO REMOVE STOCKS FROM 
+	}
+	
+	
+	/*END OF PORTFOLIO METHODS*/
+	
 	public String getUsername() {
 		return username;
 	}
