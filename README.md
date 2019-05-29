@@ -71,6 +71,7 @@ News Article SpringBoot API
  - /articles/searchcompany/{companyname}
  - /articles/searchkeyword/{keyword}
  - /articles/getarticle/{id}
+ - /articles/getifkeywordmatch/{keyword}
 
 ------------------------------------------------------------------------------------------------------------------
 
