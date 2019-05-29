@@ -26,13 +26,7 @@ public class Article {
 	private String date_created;
 	private String link;
 	private String summary;
-	
-	public String getSummary() {
-		return summary;
-	}
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
+
 	public Long getId() {
 		return id;
 	}
