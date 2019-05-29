@@ -68,7 +68,8 @@ public class StonkController {
 					+ "due to heavy load on our servers, try again later";
 		}
 		   
-		   return "this is a monthly comparison of " + stock1Data + " and " + stock2Data;
+		   return "this is the daily data for " + stock1 + " and " + stock2 + " " 
+		   			+ stock1Data + " and " + stock2Data;
 	   
 	   }
 	   
@@ -122,6 +123,7 @@ public class StonkController {
 					stockInfo.add(i, parse.get(key).toString());
 					
 				}
+				
 				testint[0]+=ListDailyMovement(stockKeyValue.get("ticker"),5);
 				
 				System.out.println(stockKeyValue.toString());
@@ -310,25 +312,6 @@ public class StonkController {
 		   // return grade of custom index
 		   
 	   }
-
-	   
-	   /*
-	    * 
-
-	   @GetMapping("/newindex")
-	   public String makeindex()
-	   {
-		   // get ticker name of stocks
-		   // get amount of shares
-		   // repeat up to 10 times
-		   // save config into db and link to user
-		   
-		   return "this is a generated new index, figure out how to pass queryparams";
-	   }
-	   
-	   *
-	   */
-	   
 	   
 	   
 	@SuppressWarnings("unchecked")
