@@ -67,6 +67,10 @@ News Article SpringBoot API
 
 ## Article Parser
 ### Port: 5050
+### Endpoints:
+ - /articles/searchcompany/{companyname}
+ - /articles/searchkeyword/{keyword}
+ - /articles/getarticle/{id}
 
 ------------------------------------------------------------------------------------------------------------------
 
