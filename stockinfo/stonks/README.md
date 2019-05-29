@@ -40,6 +40,10 @@ GET:/stock/{stock}/{days}
 	returns average low,high,movement as a double for the numbers of days
 	-{stock} should be the ticker
 	-{days} sbhould be the number of days ex. 5
+	
+GET:/fairprice/{stock}
+	returns an Array List including the stock peRatio, the sector peRatio, and a String 			dictating whether or not to buy.
+	-{stock} should be the ticker
 
 GET:/portfolio/
 	-takes portfolio as json
