@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    password: postgres
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
+    password: masterpassword
+    url: jdbc:postgresql://project2.cj4z53gwii1d.us-east-2.rds.amazonaws.com:5432/master
+    username: master
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
@@ -11,6 +11,6 @@ spring:
         temp:
           use_jdbc_metadata_defaults: false
 
-server:
-  port: 5050
+#server:
+#  port: 5432
   

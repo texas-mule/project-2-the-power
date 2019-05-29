@@ -1,6 +1,7 @@
 package com.revature.boot.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -22,7 +23,7 @@ import com.revature.boot.domain.Article;
 import com.revature.boot.service.ArticleService;
 
 @RestController
-@RequestMapping("/artists")
+@RequestMapping("/articles")
 public class ArticleController {
 	@Autowired
 	ArticleService articleService;
@@ -38,13 +39,56 @@ public class ArticleController {
 	}
 	
 	@GetMapping("/searchcompany/{companyname}")
-	public void searchCompany(@PathVariable("companyname") String companyname){
+	public String searchCompany(@PathVariable("companyname") String companyname){
+		ArrayList<Article> articles = new ArrayList();
+		articles = (ArrayList<Article>) articleService.getAllArticles();
+		String json = "";
 		
+		json += "{\"searched\":[";
+		for(int i = 0; i < articles.size(); i++){
+			
+			json += "{\"title\":\"" + articles.get(i).getTitle() + "\",";
+			json += "\"author\":\"" + articles.get(i).getAuthor() + "\",";
+			json += "\"publisher\":\"" + articles.get(i).getPublisher() + "\",";
+			json += "\"link\":\"" + articles.get(i).getLink() + "\",";
+			json += "\"date_created\":\"" + articles.get(i).getDate_created() + "\",";
+			json +=  "\"results\":" + articles.get(i).textSearch(articles.get(i).getBody(), companyname) + ", ";
+			
+		}
+		
+		json = json.substring(0, json.length() - 2);
+		json += "]}";
+		
+		return json;
 	}
 	
-	@PostMapping("/searchkeywords")
-	public void searchKeywords(){
+	@GetMapping("/searchkeyword/{keyword}")
+	public String searchKeyword(@PathVariable("keyword") String keyword){
+		ArrayList<Article> articles = new ArrayList();
+		articles = (ArrayList<Article>) articleService.getAllArticles();
+		String json = "";
 		
+		json += "{\"searched\":[";
+		for(int i = 0; i < articles.size(); i++){
+			
+			json += "{\"title\":\"" + articles.get(i).getTitle() + "\",";
+			json += "\"author\":\"" + articles.get(i).getAuthor() + "\",";
+			json += "\"publisher\":\"" + articles.get(i).getPublisher() + "\",";
+			json += "\"link\":\"" + articles.get(i).getLink() + "\",";
+			json += "\"date_created\":\"" + articles.get(i).getDate_created() + "\",";
+			json +=  "\"results\":" + articles.get(i).textSearch(articles.get(i).getBody(), keyword) + ", ";
+			
+		}
+		
+		json = json.substring(0, json.length() - 2);
+		json += "]}";
+		
+		return json;
+	}
+	
+	@GetMapping("/getarticle/{id}")
+	public Article getArticle(@PathVariable("id") Long id){
+		return articleService.getArticleById(id);
 	}
 	
 	@PostMapping
@@ -52,12 +96,12 @@ public class ArticleController {
 		if(errors.hasErrors()) return null;
 		return articleService.saveNewArticle(a);
 	}
-	
+	/*
 	@DeleteMapping("/{id}")
 	public String deleteById(@PathVariable("id") Long id) {
 		articleService.deleteById(id);
 		return "deleted!";
-	}
+	}*/
 	
 	@GetMapping("/oops")
 	public void oops() throws IOException {

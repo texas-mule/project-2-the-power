@@ -20,6 +20,11 @@ public class ArticleService {
 	}
 	
 	@Transactional
+	public Article getArticleById(Long id){
+		return this.articleRepository.getOne(id);
+	}
+	
+	@Transactional
 	public List<Article> getAllArticles() {
 		return this.articleRepository.findAll();
 	}
