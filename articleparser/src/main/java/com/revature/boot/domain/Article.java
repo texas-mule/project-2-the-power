@@ -25,7 +25,14 @@ public class Article {
 	private String publisher;
 	private String date_created;
 	private String link;
+	private String summary;
 	
+	public String getSummary() {
+		return summary;
+	}
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -96,7 +103,7 @@ public class Article {
         if (numHits > 0)
             return retJSON;
         else
-            return "no hits";
+            return "\"no hits\"";
     }
 
 }

@@ -76,7 +76,7 @@ public class ArticleController {
 			json += "\"publisher\":\"" + articles.get(i).getPublisher() + "\",";
 			json += "\"link\":\"" + articles.get(i).getLink() + "\",";
 			json += "\"date_created\":\"" + articles.get(i).getDate_created() + "\",";
-			json +=  "\"results\":" + articles.get(i).textSearch(articles.get(i).getBody(), keyword) + ", ";
+			json +=  "\"results\":" + articles.get(i).textSearch(articles.get(i).getBody(), keyword) + "}, ";
 			
 		}
 		
@@ -115,7 +115,7 @@ public class ArticleController {
 			json += "\"publisher\":\"" + matchedArticles.get(i).getPublisher() + "\",";
 			json += "\"link\":\"" + matchedArticles.get(i).getLink() + "\",";
 			json += "\"date_created\":\"" + matchedArticles.get(i).getDate_created() + "\",";
-			json += "\"summary\":\"" + matchedArticles.get(i).getSummary() + "\",";
+			json += "\"summary\":\"" + matchedArticles.get(i).getSummary() + "\"} ,";
 		}
 
 		json = json.substring(0, json.length() - 2);
