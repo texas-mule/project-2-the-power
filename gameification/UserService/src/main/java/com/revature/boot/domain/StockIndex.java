@@ -19,10 +19,6 @@ public class StockIndex {
 	public String getKey() {
 		return key;
 	}
-	//Key is static as stock
-//	public void getKey(String key) {
-//		this.key = key;
-//	}
 
 	public String getTicker() {
 		return ticker;

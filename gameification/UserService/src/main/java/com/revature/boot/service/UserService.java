@@ -50,9 +50,8 @@ public class UserService {
 	
 	public String getUserCustomIndexByName(String username){
 		User user = this.userRepository.findByUsername(username);
-		//String customIndex = "";
 		if(user != null){
-			return user.getCustomIndexes();
+			return user.getCustomIndex();
 		}
 		return "NULL USER";
 	}
