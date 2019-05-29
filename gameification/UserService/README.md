@@ -26,21 +26,21 @@ This route takes a username as a URI param and returns a user object as json
 
 ## Add funds to user Route: 
 POST
-**/users/{username}/addfunds/{amount}**
+**/users/{username}/addFunds/{amount}**
 
 This route takes a username as a uri param and an amount as a double via the uri param and returns the user as json with updated info
 
 
 ## Get custom index from user Route: 
 GET
-**/users/{username}/getCustomIndexes**
+**/users/{username}/index**
 
 This route takes a username as a uri param and returns as json the custom indexes for the user aka the stocks they choose to follow
 
 
 ## Add custom index from user Route:
 POST 
-**/users/{username}/addindex?stock=TickerSymbol&stock=TickerSymbol&stock=TickerSymbol...**
+**/users/{username}/index?stock=TickerSymbol&stock=TickerSymbol&stock=TickerSymbol...**
 
 
 
@@ -60,9 +60,22 @@ GET
 This route takes a username as a uri param returns the portfolio for the user
 
 
-## Add first portfolio to user Route: 
+## Add first portfolio to user Route:
+**/users/{username}/portfolio?ticker=StockTicker&amount=Shares&ticker=StockTicker&amount=Shares...**
+
+This route takes a username as a uri param and gets the tickers and amounts of shares from the query params and adds them to user 
+
+Notes:
+Should ONLY be used when user who is just created wants to add a portfolio
+ticker equals ticker
+StockTicker can be the stock name
+amount equals amount
+Shares is the number of shares you own
+
+
+## Buy Stock user Route: 
 POST
-**/users/{username}/buyStocks?ticker=TickerSymbol&amount=Number**
+**/users/{username}/buy?ticker=TickerSymbol&amount=Number**
 
 This route takes a username as a uri param and will add to your portfolio if funds are sufficient the stock and the amount you attempt to purchase, will detract from funds
 
@@ -78,7 +91,7 @@ Can only buy any number of stocks, if funds allow, from one ticker symbol at a t
 
 ## Sell Stock user Route: 
 POST
-**/users/{username}/sellStocks?ticker=TickerSymbol&amount=Number**
+**/users/{username}/sell?ticker=TickerSymbol&amount=Number**
 
 This route takes a username as a uri param and will sell stocks from your portfolio if valid within portfolio will add sell amount to user funds
 
