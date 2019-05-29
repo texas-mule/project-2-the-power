@@ -11,7 +11,8 @@ import com.revature.boot.domain.Article;
 
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long>{
-	Article findByName(String name);
+	Article findById(Integer id);
+	
 	
 	@Transactional
 	List<Article> findByIdBetween(Integer min, Integer max);
