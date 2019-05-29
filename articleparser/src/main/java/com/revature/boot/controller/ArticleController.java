@@ -52,6 +52,7 @@ public class ArticleController {
 			json += "\"publisher\":\"" + articles.get(i).getPublisher() + "\",";
 			json += "\"link\":\"" + articles.get(i).getLink() + "\",";
 			json += "\"date_created\":\"" + articles.get(i).getDate_created() + "\",";
+			json += "\"summary\":\"" + articles.get(i).getSummary() + "\",";
 			json +=  "\"results\":" + articles.get(i).textSearch(articles.get(i).getBody(), companyname) + ", ";
 			
 		}
@@ -76,6 +77,7 @@ public class ArticleController {
 			json += "\"publisher\":\"" + articles.get(i).getPublisher() + "\",";
 			json += "\"link\":\"" + articles.get(i).getLink() + "\",";
 			json += "\"date_created\":\"" + articles.get(i).getDate_created() + "\",";
+			json += "\"summary\":\"" + articles.get(i).getSummary() + "\",";
 			json +=  "\"results\":" + articles.get(i).textSearch(articles.get(i).getBody(), keyword) + "}, ";
 			
 		}
@@ -116,6 +118,7 @@ public class ArticleController {
 			json += "\"link\":\"" + matchedArticles.get(i).getLink() + "\",";
 			json += "\"date_created\":\"" + matchedArticles.get(i).getDate_created() + "\",";
 			json += "\"summary\":\"" + matchedArticles.get(i).getSummary() + "\"} ,";
+
 		}
 
 		json = json.substring(0, json.length() - 2);
@@ -123,6 +126,7 @@ public class ArticleController {
 
 		return json;
 	}
+
 	
 	@GetMapping("/getarticle/{id}")
 	public Article getArticle(@PathVariable("id") Long id){

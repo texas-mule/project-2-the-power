@@ -75,6 +75,14 @@ public class Article {
 	public void setLink(String link) {
 		this.link = link;
 	}
+	
+	public String getSummary() {
+		return summary;
+	}
+	
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
 
 	public String textSearch(String text, String searchWord) {
         int numHits = 0;

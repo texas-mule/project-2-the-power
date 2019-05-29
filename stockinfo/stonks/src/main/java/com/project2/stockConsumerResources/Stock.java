@@ -102,29 +102,73 @@ public class Stock {
 		
 		public static String Evaluate(double check)
 		{
-			
-			if(check >= 0 && check <= .05)
+			if(check < -.05 )
 			{
-				return "an okay day";
+				return "F";
+			}
+			else if(check > 0 && check >= -.05)
+			{
+				return "D";
+			}
+			else if(check >= 0 && check <= .05)
+			{
+				return "C";
 			}
 			else if (check <= 0)
 			{
-				return "not a good day";
+				return "B";
 				
 			}
 			else if (check >= .05 && check <= .10)
 			{
-				return "a great day";
+				return "A";
 				
 			}
 			else if (check > .10 && check <= .15)
 			{
-				return "a fantastic day";
+				return "A+";
 				
 			}
 			else if (check > .15)
 			{
-				return "a crazy day, consider donating to my venmo @nomoodfunds";
+				return "S";
+				
+			}
+			
+			return "a day";
+		}
+		public static String EvaluatePortfolio(double check)
+		{
+			if(check < -500 )
+			{
+				return "F";
+			}
+			else if(check >= -500 && check < 0)
+			{
+				return "D";
+			}
+			else if(check >= 0 && check < 500)
+			{
+				return "C";
+			}
+			else if(check >= 500 && check < 1000)
+			{
+				return "B";
+				
+			}
+			else if(check >= 1000 && check < 2000)
+			{
+				return "A";
+				
+			}
+			else if(check >= 2000 && check < 5000)
+			{
+				return "A+";
+				
+			}
+			else if (check > 5000)
+			{
+				return "S";
 				
 			}
 			
