@@ -31,29 +31,17 @@ import org.json.simple.parser.ParseException;
 @RequestMapping("/")
 public class StonkController {
 	   
-	   @GetMapping("/stocks")
-	   	public String ListOfStocks()
-	   	{
-		   //call db to return table of stocks
-		   // format table
-		   //return table back as key value pairs
-		   
-		   return "<h1> This is a list of stocks</h1>\n"
-		   +"WMT <br>"
-		   + "XOM <br>"
-		   + "MCK <br>"
-		   +"UNH <br>"
-		   +"CVS <br>"
-		   +"GM <br>"
-		   +"F <br>"
-		   +"T <br>"
-		   +"GE <br>"
-		   +"ABC <br>"
-		   +"VZ <br>"
-		   +"CVX <br>"
-		   +"COST <br>"
-		   +"FNMA <br>";
-	   	}
+	@GetMapping("/stocks")
+   	public String ListOfStocks()
+   	{
+	   //call db to return table of stocks
+	   // format table
+	   //return table back as key value pairs
+	   
+	   return "<h1> This is a list of stock tickers</h1>\n"
+	   +"WMT <br>"+ "XOM <br>"+ "MCK <br>"+"UNH <br>"+"CVS <br>"+"GM <br>"+"F <br>"+"T <br>"
+	   +"GE <br>"+"ABC <br>"+"VZ <br>"+"CVX <br>"+"COST <br>"+"FNMA <br>";
+   	}
 	   
 	   @GetMapping("/compare/{stock1}/{stock2}")
 	   public String DeltaChange(@PathVariable String stock1, @PathVariable String stock2)
@@ -72,12 +60,21 @@ public class StonkController {
 	   
 	   }
 	   
-	   /*getprice
-	    * 
-	    * return price only when given ticker name
-	    * 
-	    * 
-	    */
+	   @GetMapping("/price/{ticker}")
+	   	public Double PriceOfStocks(@PathVariable String ticker)
+	   	{
+		   String stock1Url = "https://financialmodelingprep.com/api/company/price/"+ticker+"?datatype=json";
+		   try {
+			String stock1Data = Stock.sendGet(stock1Url);
+			System.out.println(Double.parseDouble((stock1Data.toString().split(":")[2]).replace("}", "")));
+			return 0.0;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0.0;
+		}
+		   
+	   	}
 	   
 	   @GetMapping("/hello/{name}")
 	   @ResponseBody
@@ -85,19 +82,68 @@ public class StonkController {
 	       return "hello " + name + " you did it!";
 	   }
 	   
-	   @GetMapping("/customindex/{timeframe}")
+	   @SuppressWarnings("unchecked")
+	   @GetMapping("/customindex/{timeframe}/{username}")
 	   @ResponseBody
-	   public String GenerateReport(@PathVariable String timeframe) // int is placeholder for object
+	   public double GenerateReport(@PathVariable String timeframe, @PathVariable String Username)
 	   {
-		   //
-		   //for each ticker, get summary from
-		   // /stock/{name}/{id}
-		   //
-		   //
-		   //
+		   String Test = "{ \"index\" : ["
+		   		+ "{ \"stock\": \"AAPL\","
+		   		+ "	\"amount\": 20}, "
+		   		+ "{ \"stock\": \"WMT\","
+		   		+ "	\"amount\": 20}, "
+		   		+ "] }";
 		   
+		   JSONParser parser = new JSONParser();
 		   
-		   return "this is a generated report for " + timeframe + " units";
+		   try {
+			   
+		    /*
+		   	String UserUrl = "https://localhost:7070/users/" + username + "/index";	
+			String stockData = Stock.sendGet(stockUrl);
+			JSONParser parser = new JSONParser();
+			JSONObject json = (JSONObject) parser.parse(stockData);
+			*/
+			   
+			JSONObject json = (JSONObject) parser.parse(Test); // replace this with above comment when production
+			JSONArray details = (JSONArray) json.get("index");
+			
+			System.out.println(json.toString());
+			List<String> stockInfo = new ArrayList<>();
+			
+			HashMap<String, String> stockKeyValue = new HashMap<String, String>();
+			
+			
+			double testint[] = {0,0,0,0};
+		
+			details.forEach( timeseries ->
+			{
+				JSONObject parse = (JSONObject) timeseries;
+				
+				for(int i = 0; i<parse.size(); i++)
+				{
+					String key = parse.keySet().toArray()[i].toString();
+					
+					stockKeyValue.put(key, parse.get(key).toString());
+					stockInfo.add(i, parse.get(key).toString());
+					
+				}
+				
+				testint[0]+=ListDailyMovement(stockKeyValue.get("stock"),5);
+				
+				System.out.println(stockKeyValue.toString());
+
+			});
+			
+			return testint[0]/details.size();
+
+			
+
+	   	} catch (Exception e) {
+
+			return -999;
+		}
+			
 	   }
 
 	   @SuppressWarnings("unchecked")
@@ -341,35 +387,6 @@ public class StonkController {
 		   
 	   }
 	   
-	   @GetMapping("/gradeIndex/")
-	   public void GetCustomIndex(@RequestParam String id)
-	   {
-		   
-		   //fetch index from database
-		   // get all stocks data
-		   //conglom growth %
-		   // return grade of custom index
-		   
-	   }
-
-	   
-	   /*
-	    * 
-
-	   @GetMapping("/newindex")
-	   public String makeindex()
-	   {
-		   // get ticker name of stocks
-		   // get amount of shares
-		   // repeat up to 10 times
-		   // save config into db and link to user
-		   
-		   return "this is a generated new index, figure out how to pass queryparams";
-	   }
-	   
-	   *
-	   */
-	   
 	   
 	   
 	@SuppressWarnings("unchecked")
@@ -429,12 +446,72 @@ public class StonkController {
 		   return "this is the data for a share of " + stock;
 	   }
 	   
-	  @PostMapping("/portfolio")
+	
+	@SuppressWarnings("unchecked")
+	  @GetMapping("/portfolio/{stock}/{days}")
 	  public String GradePortfolio(@PathVariable String stock, @PathVariable int days)
 	   {
-		  return "ok";
+		  String Test = "{ \"portfolio\" : ["
+			   		+ "{ \"ticker\": \"AAPL\","
+			   		+ "	\"amount\": 20}, "
+			   		+ "{ \"ticker\": \"WMT\","
+			   		+ "	\"amount\": 20}, "
+			   		+ "] }";
+			   
+			   JSONParser parser = new JSONParser();
+			   
+			   try {
+				   
+			    /*
+			   	String UserUrl = "https://localhost:7070/users/" + username + "/index";	
+				String stockData = Stock.sendGet(stockUrl);
+				JSONParser parser = new JSONParser();
+				JSONObject json = (JSONObject) parser.parse(stockData);
+				*/
+				   
+				JSONObject json = (JSONObject) parser.parse(Test); // replace this with above comment when production
+				JSONArray details = (JSONArray) json.get("portfolio");
+				
+				System.out.println(json.toString());
+				List<String> stockInfo = new ArrayList<>();
+				
+				HashMap<String, String> stockKeyValue = new HashMap<String, String>();
+				
+				
+				double testint[] = {0};
+			
+				details.forEach( timeseries ->
+				{
+					JSONObject parse = (JSONObject) timeseries;
+					
+					for(int i = 0; i<parse.size(); i++)
+					{
+						String key = parse.keySet().toArray()[i].toString();
+						
+						stockKeyValue.put(key, parse.get(key).toString());
+						stockInfo.add(i, parse.get(key).toString());
+						
+					}
+					
+					testint[0]+= ((ListDailyMovement(stockKeyValue.get("ticker"),5) *.01))
+								*(ListHighIndex(stockKeyValue.get("ticker"),5)*
+								Double.parseDouble(stockKeyValue.get("amount")));
+					
+					System.out.println(stockKeyValue.toString());
+					
+					System.out.println(testint[0]);
+
+				});
+				System.out.println(testint[0]);
+				return Stock.Evaluate(testint[0]);
+
+				
+
+		   	} catch (Exception e) {
+
+				return "none available";
+			}
 	   }
-	   
 	   
 	   @GetMapping("/compareDay/{stock1}/{stock2}")
 	   @ResponseBody
