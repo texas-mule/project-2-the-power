@@ -68,8 +68,7 @@ public class StonkController {
 					+ "due to heavy load on our servers, try again later";
 		}
 		   
-		   return "this is the daily data for " + stock1 + " and " + stock2 + " " 
-		   			+ stock1Data + " and " + stock2Data;
+		   return "this is a monthly comparison of " + stock1Data + " and " + stock2Data;
 	   
 	   }
 	   
@@ -86,63 +85,20 @@ public class StonkController {
 	       return "hello " + name + " you did it!";
 	   }
 	   
-	   @SuppressWarnings("unchecked")
 	   @GetMapping("/customindex/{timeframe}")
 	   @ResponseBody
-	   public int GenerateReport(@PathVariable String timeframe) // int is placeholder for object
+	   public String GenerateReport(@PathVariable String timeframe) // int is placeholder for object
 	   {
-		   String Test = "{ \"portfolio\" : ["
-		   		+ "{ \"ticker\": \"AAPL\","
-		   		+ "	\"amount\": 20}, "
-		   		+ "{ \"ticker\": \"WMT\","
-		   		+ "	\"amount\": 20}, "
-		   		+ "] }";
+		   //
+		   //for each ticker, get summary from
+		   // /stock/{name}/{id}
+		   //
+		   //
+		   //
 		   
-		   JSONParser parser = new JSONParser();
-		   try {
-			JSONObject json = (JSONObject) parser.parse(Test);
-			JSONArray details = (JSONArray) json.get("portfolio");
-			
-			System.out.println(json.toString());
-			List<String> stockInfo = new ArrayList<>();
-			
-			HashMap<String, String> stockKeyValue = new HashMap<String, String>();
-			
-			
-			double testint[] = {0,0,0,0};
-		
-			details.forEach( timeseries ->
-			{
-				JSONObject parse = (JSONObject) timeseries;
-				
-				for(int i = 0; i<parse.size(); i++)
-				{
-					String key = parse.keySet().toArray()[i].toString();
-					
-					stockKeyValue.put(key, parse.get(key).toString());
-					stockInfo.add(i, parse.get(key).toString());
-					
-				}
-				
-				testint[0]+=ListDailyMovement(stockKeyValue.get("ticker"),5);
-				
-				System.out.println(stockKeyValue.toString());
-
-			});
-			
-			System.out.println(testint[0]/details.size());
-
-			
-
-	   	} catch (Exception e) {
-
-			return -999;
-		}
-			
 		   
-		   return 1;
+		   return "this is a generated report for " + timeframe + " units";
 	   }
-
 
 	   @SuppressWarnings("unchecked")
 	   @GetMapping("/Dailyhigh/{stock}/{days}")
@@ -301,6 +257,89 @@ public class StonkController {
 		   
 	   }
 	   
+	   @SuppressWarnings("unchecked")
+	   @GetMapping("/fairprice/{stock}")
+	   public String displayFairPrice(@PathVariable String stock)
+	   {
+		   try {
+			   
+				String stockUrl = "https://api.iextrading.com/1.0/stock/"+stock+"/book";	
+				String stockData = Stock.sendGet(stockUrl);
+				JSONParser parser = new JSONParser();
+				JSONObject stockJson = (JSONObject) parser.parse(stockData);
+				JSONObject details = (JSONObject) stockJson.get("quote");
+				
+
+				double stockPENEC = (double) details.get("peRatio");
+				String sectorComparison = (String) details.get("sector");
+				sectorComparison.trim();
+				sectorComparison = sectorComparison.replaceAll("\\s", "%20");
+	
+				String stockUrl2 = "https://api.iextrading.com/1.0/stock/market/collection/sector?collectionName="+sectorComparison;	
+				String stockData2 = Stock.sendGet(stockUrl2);
+				JSONParser parser2 = new JSONParser();
+				JSONArray stockJson2 = (JSONArray) parser2.parse(stockData2);
+			
+				
+				HashMap<String, Double> stockKeyValue = new HashMap<String, Double>();
+				
+		
+				
+				int size = 0;
+				int i = 0;
+				double summation = 0.0;
+					while(size<10)
+					{
+						
+						String stockName;
+						double stockPE;
+						
+						
+						
+						try {
+							JSONObject stock4 = (JSONObject) stockJson2.get(i);
+
+							stockName = (String) stock4.get("symbol");
+					
+							
+							stockPE = (double) stock4.get("peRatio");
+							
+							
+						
+							
+							if(stockPE>0) {
+								stockKeyValue.put(stockName, stockPE);
+								size++;
+								i++;
+								summation = summation + stockPE;
+							}
+							
+							i++;
+						
+						} catch (Exception e) {
+							i++;
+						}
+						
+					
+					}
+				
+				
+		
+				System.out.println(stockKeyValue.toString());
+				System.out.println(summation/10);
+				System.out.println(stockPENEC);
+				
+				if(stockPENEC<((summation/10))&& stockPENEC>0)
+						return "BUY";
+				else
+					return "DONT BUY";
+				
+		   	} catch (Exception e) {
+		   		return "ERROR";
+
+		   	}
+		   
+	   }
 	   
 	   @GetMapping("/gradeIndex/")
 	   public void GetCustomIndex(@RequestParam String id)
@@ -312,6 +351,25 @@ public class StonkController {
 		   // return grade of custom index
 		   
 	   }
+
+	   
+	   /*
+	    * 
+
+	   @GetMapping("/newindex")
+	   public String makeindex()
+	   {
+		   // get ticker name of stocks
+		   // get amount of shares
+		   // repeat up to 10 times
+		   // save config into db and link to user
+		   
+		   return "this is a generated new index, figure out how to pass queryparams";
+	   }
+	   
+	   *
+	   */
+	   
 	   
 	   
 	@SuppressWarnings("unchecked")
