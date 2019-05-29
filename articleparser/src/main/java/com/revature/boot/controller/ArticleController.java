@@ -52,6 +52,7 @@ public class ArticleController {
 			json += "\"publisher\":\"" + articles.get(i).getPublisher() + "\",";
 			json += "\"link\":\"" + articles.get(i).getLink() + "\",";
 			json += "\"date_created\":\"" + articles.get(i).getDate_created() + "\",";
+			json += "\"summary\":\"" + articles.get(i).getSummary() + "\",";
 			json +=  "\"results\":" + articles.get(i).textSearch(articles.get(i).getBody(), companyname) + ", ";
 			
 		}
@@ -76,6 +77,7 @@ public class ArticleController {
 			json += "\"publisher\":\"" + articles.get(i).getPublisher() + "\",";
 			json += "\"link\":\"" + articles.get(i).getLink() + "\",";
 			json += "\"date_created\":\"" + articles.get(i).getDate_created() + "\",";
+			json += "\"summary\":\"" + articles.get(i).getSummary() + "\",";
 			json +=  "\"results\":" + articles.get(i).textSearch(articles.get(i).getBody(), keyword) + ", ";
 			
 		}
@@ -85,6 +87,44 @@ public class ArticleController {
 		
 		return json;
 	}
+	
+	@GetMapping("/getifkeywordmatch/{keyword}")
+	public String getIfKeywordMatch(@PathVariable("keyword") String keyword) {
+		ArrayList<Article> articles = new ArrayList();
+		articles = (ArrayList<Article>) articleService.getAllArticles();
+
+		ArrayList<Article> matchedArticles = new ArrayList();
+		for (Article article : articles) {
+			String body = article.getBody();
+			String title = article.getTitle();
+			String summary = article.getSummary();
+
+			if (article.textSearch(body, keyword) != "no hits")
+				matchedArticles.add(article);
+			else if (article.textSearch(title, keyword) != "no hits")
+				matchedArticles.add(article);
+			else if (article.textSearch(summary, keyword) != "no hits")
+				matchedArticles.add(article);
+		}
+
+		String json = "";
+
+		json += "{\"searched\":[";
+		for (int i = 0; i < matchedArticles.size(); i++) {
+
+			json += "{\"title\":\"" + matchedArticles.get(i).getTitle() + "\",";
+			json += "\"author\":\"" + matchedArticles.get(i).getAuthor() + "\",";
+			json += "\"publisher\":\"" + matchedArticles.get(i).getPublisher() + "\",";
+			json += "\"link\":\"" + matchedArticles.get(i).getLink() + "\",";
+			json += "\"date_created\":\"" + matchedArticles.get(i).getDate_created() + "\",";
+			json += "\"summary\":\"" + matchedArticles.get(i).getSummary() + "\",";
+		}
+
+		json = json.substring(0, json.length() - 2);
+		json += "]}";
+
+		return json;
+	}	
 	
 	@GetMapping("/getarticle/{id}")
 	public Article getArticle(@PathVariable("id") Long id){
