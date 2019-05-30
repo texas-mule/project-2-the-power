@@ -17,12 +17,16 @@ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee
         <http:listener config-ref="HTTP_Listener_Configuration1" path="/test" allowedMethods="GET" doc:name="HTTP"/>
         <set-payload value="it worked" doc:name="Set Payload"/>
     </flow>
+    <sub-flow name="project2muleSub_Flow">
+        <http:request config-ref="HTTP_Request_Configuration" path="/sessionvariable" method="GET" doc:name="HTTP"/>
+    </sub-flow>
     <flow name="AuthGetToken">
         <http:listener config-ref="HTTP_Listener_Configuration1" path="/authtoken" doc:name="HTTP" allowedMethods="POST"/>
         <set-payload value="#[payload]" doc:name="Set Payload"/>
         <response>
             <http:request config-ref="HTTP_Request_Configuration" path="/token" method="POST" doc:name="HTTP"/>
         </response>
+
         <dw:transform-message doc:name="Transform Message">
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
@@ -31,11 +35,11 @@ payload]]></dw:set-payload>
         </dw:transform-message>
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
     </flow>
-    <flow name="ViewStocks">
+    <flow name="ViewStocksStockInfo">
         <http:listener config-ref="HTTP_Listener_Configuration1" path="/stocks" allowedMethods="GET" doc:name="HTTP"/>
         <http:request config-ref="StockInfoConfig" path="/stocks" method="GET" doc:name="HTTP"/>
     </flow>
-    <flow name="CompareStocks">
+    <flow name="CompareStocksStockInfo">
         <http:listener config-ref="HTTP_Listener_Configuration1" path="/comparestock/{stock1}/{stock2}" allowedMethods="GET" doc:name="HTTP"/>
         <set-variable variableName="stock1" value="#[message.inboundProperties.'http.uri.params'.stock1]" doc:name="Stock1"/>
         <set-variable variableName="stock2" value="#[message.inboundProperties.'http.uri.params'.stock2]" doc:name="Stock2"/>
@@ -47,7 +51,51 @@ payload]]></dw:set-payload>
                 </http:request-builder>
             </http:request>
         </response>
+
         <logger message="#[flowVars.stock1]" level="INFO" doc:name="Logger"/>
+    </flow>
+    <flow name="CustomIndexStockInfo">
+        <http:listener config-ref="HTTP_Listener_Configuration1" path="/stockcustomindex/{timeframedays}" allowedMethods="GET" doc:name="HTTP"/>
+        <set-variable variableName="timeframedays" value="#[message.inboundProperties.'http.uri.params'.timeframedays]" doc:name="TimeFrameDays"/>
+        <logger message="#[flowVars.timeframedays]" level="INFO" doc:name="Logger"/>
+        <http:request config-ref="StockInfoConfig" path="/customindex/{timeframedays}" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:uri-param paramName="timeframedays" value="#[flowVars.timeframedays]"/>
+            </http:request-builder>
+        </http:request>
+    </flow>
+    <flow name="DailyHighStockInfo">
+        <http:listener config-ref="HTTP_Listener_Configuration1" path="/highaverage/{stock}/{days}" allowedMethods="GET" doc:name="HTTP"/>
+        <set-variable variableName="stock" value="#[message.inboundProperties.'http.uri.params'.stock]" doc:name="Stock"/>
+        <set-variable variableName="days" value="#[message.inboundProperties.'http.uri.params'.days]" doc:name="Days"/>
+        <http:request config-ref="StockInfoConfig" path="/high/{stock}/{days}" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:uri-param paramName="stock" value="#[flowVars.stock]"/>
+                <http:uri-param paramName="days" value="#[flowVars.days]"/>
+            </http:request-builder>
+        </http:request>
+    </flow>
+    <flow name="DailyLowStockInfo">
+        <http:listener config-ref="HTTP_Listener_Configuration1" path="/lowaverage/{stock}/{days}" allowedMethods="GET" doc:name="HTTP"/>
+        <set-variable variableName="stock" value="#[message.inboundProperties.'http.uri.params'.stock]" doc:name="Stock"/>
+        <set-variable variableName="days" value="#[message.inboundProperties.'http.uri.params'.days]" doc:name="Days"/>
+        <http:request config-ref="StockInfoConfig" path="/low/{stock}/{days}" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:uri-param paramName="stock" value="#[flowVars.stock]"/>
+                <http:uri-param paramName="days" value="#[flowVars.days]"/>
+            </http:request-builder>
+        </http:request>
+    </flow>
+    <flow name="StockInfo">
+        <http:listener config-ref="HTTP_Listener_Configuration1" path="/stockinfo/{stock}/{timeframe}" allowedMethods="GET" doc:name="HTTP"/>
+        <set-variable variableName="stock" value="#[message.inboundProperties.'http.uri.params'.stock]" doc:name="Stock"/>
+        <set-variable variableName="timeframe" value="#[message.inboundProperties.'http.uri.params'.timeframe]" doc:name="TimeFrame"/>
+        <http:request config-ref="StockInfoConfig" path="/stockinfo/{stock}/{timeframe}" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:uri-param paramName="stock" value="#[flowVars.stock]"/>
+                <http:uri-param paramName="timeframe" value="#[flowVars.timeframe]"/>
+            </http:request-builder>
+        </http:request>
     </flow>
 
 </mule>
