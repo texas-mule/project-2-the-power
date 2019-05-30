@@ -14,6 +14,7 @@ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee
     <http:request-config name="Auth"  host="myaauth.herokuapp.com" port="80" doc:name="HTTP Request Configuration"/>
     <http:request-config name="StockInfoConfig" host="thepowerstock.herokuapp.com" port="80" basePath="/stock" doc:name="HTTP Request Configuration"/>
     <http:request-config name="Articles" host="ec2-3-16-91-173.us-east-2.compute.amazonaws.com" port="8080" basePath="/articles" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="UserInfo" host="rajj.herokuapp.com" port="80" doc:name="HTTP Request Configuration"/>
 
     <flow name="AuthGetToken">
         <http:listener config-ref="HTTP_Listener_Configuration1" path="/authtoken" doc:name="HTTP" allowedMethods="POST"/>
@@ -112,6 +113,48 @@ payload]]></dw:set-payload>
 
             </http:request-builder>
         </http:request>
+    </flow>
+    <flow name="UserInfoUsers">
+        <http:listener config-ref="HTTP_Listener_Configuration1" path="/userinfo/{username}" allowedMethods="GET" doc:name="HTTP"/>
+        <set-variable variableName="username" value="#[message.inboundProperties.'http.uri.params'.username]" doc:name="Username"/>
+        <http:request config-ref="UserInfo" path="/users/{username}" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:uri-param paramName="username" value="#[flowVars.username]"/>
+            </http:request-builder>
+        </http:request>
+    </flow>
+    <flow name="CustomIndexUserInfo">
+        <http:listener config-ref="HTTP_Listener_Configuration1" path="/userindex/{username}" allowedMethods="GET" doc:name="HTTP"/>
+        <set-variable variableName="username" value="#[message.inboundProperties.'http.uri.params'.username]" doc:name="Username"/>
+        <http:request config-ref="UserInfo" path="/users/{username}/index" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:uri-param paramName="username" value="#[flowVars.username]"/>
+
+            </http:request-builder>
+        </http:request>
+    </flow>
+    <flow name="PortfolioUserInfo">
+        <http:listener config-ref="HTTP_Listener_Configuration1" path="/portfolio/{username}" allowedMethods="GET" doc:name="HTTP"/>
+        <set-variable variableName="username" value="#[message.inboundProperties.'http.uri.params'.username]" doc:name="username"/>
+        <logger message="#[flowVars.username], #[message.inboundProperties.'http.uri.params'.username]" level="INFO" doc:name="Logger"/>
+        <http:request config-ref="UserInfo" path="/users/{username}/portfolio" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:uri-param paramName="username" value="#[flowVars.username]"/>
+            </http:request-builder>
+        </http:request>
+    </flow>
+    <flow name="AddFundsUserInfo">
+        <http:listener config-ref="HTTP_Listener_Configuration1" path="/users/{username}/addFunds/{amount}" allowedMethods="GET" doc:name="HTTP"/>
+        <response>
+            <http:request config-ref="UserInfo" path="/users/{username}/addFunds/{amount}" method="GET" doc:name="HTTP">
+                <http:request-builder>
+                    <http:uri-param paramName="username" value="#[flowVars.username]"/>
+                    <http:uri-param paramName="amount" value="#[flowVars.amount]"/>
+                </http:request-builder>
+            </http:request>
+        </response>
+        <set-variable variableName="username" value="#[message.inboundProperties.'http.uri.params'.username]" doc:name="Username"/>
+        <set-variable variableName="amount" value="#[message.inboundProperties.'http.uri.params'.amount]" doc:name="Amont"/>
     </flow>
 
 </mule>
