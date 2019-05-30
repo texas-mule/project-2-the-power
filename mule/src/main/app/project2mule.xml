@@ -11,21 +11,17 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
 http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
     <http:listener-config name="HTTP_Listener_Configuration" host="localhost" port="8080" basePath="/howto" doc:name="HTTP Listener Configuration"/>
     <http:listener-config name="HTTP_Listener_Configuration1" host="localhost" port="8085" basePath="/thepower" doc:name="HTTP Listener Configuration"/>
-    <http:request-config name="HTTP_Request_Configuration"  host="myaauth.herokuapp.com" port="80" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="Auth"  host="myaauth.herokuapp.com" port="80" doc:name="HTTP Request Configuration"/>
     <http:request-config name="StockInfoConfig" host="thepowerstock.herokuapp.com" port="80" basePath="/stock" doc:name="HTTP Request Configuration"/>
-    <flow name="project2muleFlow">
-        <http:listener config-ref="HTTP_Listener_Configuration1" path="/test" allowedMethods="GET" doc:name="HTTP"/>
-        <set-payload value="it worked" doc:name="Set Payload"/>
-    </flow>
-    <sub-flow name="project2muleSub_Flow">
-        <http:request config-ref="HTTP_Request_Configuration" path="/sessionvariable" method="GET" doc:name="HTTP"/>
-    </sub-flow>
+    <http:request-config name="Articles" host="ec2-3-16-91-173.us-east-2.compute.amazonaws.com" port="8080" basePath="/articles" doc:name="HTTP Request Configuration"/>
+
     <flow name="AuthGetToken">
         <http:listener config-ref="HTTP_Listener_Configuration1" path="/authtoken" doc:name="HTTP" allowedMethods="POST"/>
         <set-payload value="#[payload]" doc:name="Set Payload"/>
         <response>
-            <http:request config-ref="HTTP_Request_Configuration" path="/token" method="POST" doc:name="HTTP"/>
+            <http:request config-ref="Auth" path="/token" method="POST" doc:name="HTTP"/>
         </response>
+
 
         <dw:transform-message doc:name="Transform Message">
             <dw:set-payload><![CDATA[%dw 1.0
@@ -51,6 +47,7 @@ payload]]></dw:set-payload>
                 </http:request-builder>
             </http:request>
         </response>
+
 
         <logger message="#[flowVars.stock1]" level="INFO" doc:name="Logger"/>
     </flow>
@@ -94,6 +91,25 @@ payload]]></dw:set-payload>
             <http:request-builder>
                 <http:uri-param paramName="stock" value="#[flowVars.stock]"/>
                 <http:uri-param paramName="timeframe" value="#[flowVars.timeframe]"/>
+            </http:request-builder>
+        </http:request>
+    </flow>
+    <flow name="SearchCompanyArticle">
+        <http:listener config-ref="HTTP_Listener_Configuration1" path="/searchcompany/{company}" allowedMethods="GET" doc:name="HTTP"/>
+        <set-variable variableName="company" value="#[message.inboundProperties.'http.uri.params'.company]" doc:name="Company"/>
+        <http:request config-ref="Articles" path="/searchcompany/{company}" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:uri-param paramName="company" value="#[flowVars.company]"/>
+            </http:request-builder>
+        </http:request>
+    </flow>
+    <flow name="SearchKeywordArticle">
+        <http:listener config-ref="HTTP_Listener_Configuration1" path="/searchkeyword/{keyword}" allowedMethods="GET" doc:name="HTTP"/>
+        <set-variable variableName="keyword" value="#[message.inboundProperties.'http.uri.params'.keyword]" doc:name="Keyword"/>
+        <http:request config-ref="Articles" path="/searchkeyword/{keyword}" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:uri-param paramName="keyword" value="#[flowVars.keyword]"/>
+
             </http:request-builder>
         </http:request>
     </flow>
