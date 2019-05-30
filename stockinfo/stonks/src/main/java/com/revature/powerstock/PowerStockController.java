@@ -30,34 +30,30 @@ public class PowerStockController {
 	
 	// List Stocks By Sector Functionality
 	@GetMapping("/stocks")
-	public String availableStocks() {
+	public HashMap<String, HashMap<String, String>> availableStocks() {
 		
 		// Create An ArrayList to Hold Stock Names
-			ArrayList<String> sectors = new ArrayList<String>();
+			HashMap<String, HashMap<String, String>> sectors = new HashMap<String, HashMap<String, String>>();
 					
 		// Gather Technology Stock Data
 			TechnologyStocks techStockData = new TechnologyStocks();
-			ArrayList<String> tech = techStockData.getStocks();
+			sectors.put("Technology", techStockData.getStocks());
 			
 			System.out.println("Technology Stocks");
-		sectors.addAll(tech);
 		
 		// Gather Consumer Defensive Stock Data
 			ConsumerDefensiveStocks conDefStockData = new ConsumerDefensiveStocks();
-			ArrayList<String> conDef = conDefStockData.getStocks();
+			sectors.put("Consumer Defensive", conDefStockData.getStocks());
 				
 			System.out.println("Consumber Defensive Stocks");
-		sectors.addAll(conDef);
 		
 		// Gather HealthCare Stock Data
 			HealthCareStocks healthStockData = new HealthCareStocks();
-			ArrayList<String> health = healthStockData.getStocks();
+			sectors.put("Health Care", healthStockData.getStocks());
 					
 			System.out.println("HealthCare Stocks");
-		sectors.addAll(health);
-
 		
-		return sectors.toString();
+		return sectors;
 
 		   
 		
@@ -68,23 +64,27 @@ public class PowerStockController {
 	// pathvariabletwo - stocksymbol
    @GetMapping("/compare/{stock1}/{stock2}")
    @ResponseBody
-   public String compareStocks(@PathVariable String stock1, @PathVariable String stock2) throws Exception
+   public HashMap<String, Double> compareStocks(@PathVariable String stock1, @PathVariable String stock2) throws Exception
    {
+	   HashMap<String, Double> compHashData = new HashMap<String, Double>();
+	   
 	   CompareStocks comparison = new CompareStocks();
-	   String comparisonData = comparison.getStockComparison(stock1, stock2);
+	   compHashData.putAll(comparison.getStockComparison(stock1, stock2));
 
-	   return comparisonData;   
+	   return compHashData;   
    }
 
    // Get Price Of Stock 
    // pathvariableone - stocksymbol
    @GetMapping("/price/{ticker}")
-  	public Double priceOfStock(@PathVariable String ticker) throws Exception
+  	public HashMap<String, Double> priceOfStock(@PathVariable String ticker) throws Exception
   	{
+	   HashMap<String, Double> stockPrice = new HashMap<String, Double>();
 	   String stockURL= "https://financialmodelingprep.com/api/company/price/"+ticker+"?datatype=json";
 	   String stockData = Stock.sendGet(stockURL);
-	   return Double.parseDouble((stockData.toString().split(":")[2]).replace("}", ""));
+	   stockPrice.put(ticker ,Double.parseDouble((stockData.toString().split(":")[2]).replace("}", "")));
 		
+	   return stockPrice;
   	}
 
    // Gather Overall Change in Custom Index
@@ -93,19 +93,23 @@ public class PowerStockController {
    @SuppressWarnings("unchecked")
    @GetMapping("/customindex/{timeframe}/{username}")
    @ResponseBody
-   public double generateIndexReport(@PathVariable int timeframe, @PathVariable String username) {
+   public HashMap<String, Double> generateIndexReport(@PathVariable int timeframe, @PathVariable String username) {
+	   HashMap<String, Double> stockMovement = new HashMap<String, Double>();
+	   
 	   GenerateIndexReport indexReport = new GenerateIndexReport();
 	   double totalMovement = indexReport.GenerateReport(timeframe, username);
 	   
-	   return totalMovement;
+	   stockMovement.put(username, totalMovement);
+	   
+	   return stockMovement;
 	   
    }
    
    // Get The Daily High For A Stock
    @SuppressWarnings("unchecked")
    @GetMapping("/high/{stock}/{days}")
-   public double stockAverageHigh(@PathVariable String stock, @PathVariable int days) {
-	   try {
+   public HashMap<String, Double> stockAverageHigh(@PathVariable String stock, @PathVariable int days) throws Exception {
+	   HashMap<String, Double> high = new HashMap<String, Double>();
 		   
 			String stockUrl = "https://financialmodelingprep.com/api/v3/historical-price-full/"+stock+"?timeseries=" + days;	
 			String stockData = Stock.sendGet(stockUrl);
@@ -145,23 +149,20 @@ public class PowerStockController {
 			
 			DecimalFormat df = new DecimalFormat("####0.00");
 			
+			high.put(stock, avg);
 			System.out.println("\n");
 			System.out.println("average daily high over "+days+" days: " + (df.format(avg)));
 			
-			return (avg);
+			return (high);
 			
-	   	} catch (Exception e) {
-
-			return -999;
-		}
    }
    
    // Get The Daily Low For A Stock
    @SuppressWarnings("unchecked")
    @GetMapping("/low/{stock}/{days}")
-   public double stockAverageLow(@PathVariable String stock, @PathVariable int days) {
-	   try {
-		   
+   public HashMap<String, Double> stockAverageLow(@PathVariable String stock, @PathVariable int days) throws Exception {
+	   HashMap<String, Double> low = new HashMap<String, Double>();
+
 			String stockUrl = "https://financialmodelingprep.com/api/v3/historical-price-full/"+stock+"?timeseries=" + days;	
 			String stockData = Stock.sendGet(stockUrl);
 			JSONParser parser = new JSONParser();
@@ -200,29 +201,33 @@ public class PowerStockController {
 			
 			DecimalFormat df = new DecimalFormat("####0.00");
 			
+			low.put(stock, avg);
 			System.out.println("\n");
 			System.out.println("average daily low over "+days+" days: " + (df.format(avg)));
 			
-			return (avg);
+			return (low);
 			
-	   	} catch (Exception e) {
-			return -999;
-		}
    }
    
    // Get Basic Stock Info
 	@SuppressWarnings("unchecked")
 	@GetMapping("/stockinfo/{stock}/{days}")
-	   public String ListStockInfo(@PathVariable String stock, @PathVariable int days)
+	   public HashMap<String, HashMap<String, Double>> ListStockInfo(@PathVariable String stock, @PathVariable int days) throws Exception
 	   {
+		
+		HashMap<String, HashMap<String, Double>> stockInfo = new HashMap<String, HashMap<String,Double>>();
+		
 		StockInformation stockData = new StockInformation();
-		return stockData.ListStockInfo(stock, days);
+		stockInfo.put(stock, stockData.ListStockInfo(stock, days));
+
+		return stockInfo;
+		
 	   }
 	
-	   
+  // Fair Price Algorithm
 	   @SuppressWarnings("unchecked")
 	   @GetMapping("/fairprice/{stock}")
-	   public FairPriceData displayFairPrice(@PathVariable String stock)
+ 	   public FairPriceData displayFairPrice(@PathVariable String stock)
 	   {
 		   FairPriceData fairPrice = new FairPriceData();
 		   
@@ -248,32 +253,22 @@ public class PowerStockController {
 			
 				
 				HashMap<String, Double> stockKeyValue = new HashMap<String, Double>();
-				
-		
-				
 				int size = 0;
 				int i = 0;
 				double summation = 0.0;
 				
 					while(size<30)
 					{
-						
 						String stockName;
 						double stockPE;
-						
-						
-						
+	
 						try {
 							JSONObject stock4 = (JSONObject) stockJson2.get(i);
 
 							stockName = (String) stock4.get("symbol");
-					
-							
+				
 							stockPE = (double) stock4.get("peRatio");
-							
-							
-						
-							
+			
 							if(stockPE>0) {
 								stockKeyValue.put(stockName, stockPE);
 								size++;
@@ -286,16 +281,9 @@ public class PowerStockController {
 						} catch (Exception e) {
 							i++;
 						}
-						
-					
+	
 					}
-				
-				
-		
-				System.out.println(stockKeyValue.toString());
-				System.out.println(summation/30);
 				fairPrice.setSectorPeRatio(summation/30);
-				System.out.println(stockPENEC);
 				
 				if(stockPENEC<((summation/30))&& stockPENEC>0) {
 					fairPrice.setBuyindicator("BUY");
@@ -313,29 +301,17 @@ public class PowerStockController {
 		   	}
 		   
 	   }
-		@SuppressWarnings("unchecked")
-		  @GetMapping("/portfolio/{stock}/{days}")
-		  public String GradePortfolio(@PathVariable String stock, @PathVariable int days)
-		   {
-			  String Test = "{ \"portfolio\" : ["
-				   		+ "{ \"ticker\": \"AAPL\","
-				   		+ "	\"amount\": 20}, "
-				   		+ "{ \"ticker\": \"WMT\","
-				   		+ "	\"amount\": 20}, "
-				   		+ "] }";
-				   
+	
+	   @SuppressWarnings("unchecked")
+		@GetMapping("/portfolio/{username}")
+		  public HashMap<String, String> GradePortfolio(@PathVariable String username) throws Exception
+		   {		   
 				   JSONParser parser = new JSONParser();
-				   
-				   try {
-					   
-				    /*
+				    
 				   	String UserUrl = "https://localhost:7070/users/" + username + "/index";	
-					String stockData = Stock.sendGet(stockUrl);
-					JSONParser parser = new JSONParser();
+					String stockData = Stock.sendGet(UserUrl);
 					JSONObject json = (JSONObject) parser.parse(stockData);
-					*/
-					   
-					JSONObject json = (JSONObject) parser.parse(Test); // replace this with above comment when production
+		
 					JSONArray details = (JSONArray) json.get("portfolio");
 					
 					System.out.println(json.toString());
@@ -343,6 +319,7 @@ public class PowerStockController {
 					
 					HashMap<String, String> stockKeyValue = new HashMap<String, String>();
 					
+					HashMap<String, String> portGrade = new HashMap<String, String>();
 					
 					double testint[] = {0};
 				
@@ -361,9 +338,17 @@ public class PowerStockController {
 						
 						DailyStockMovement movement = new DailyStockMovement();
 						
-						testint[0]+= ((movement.ListDailyMovement(stockKeyValue.get("ticker"),5) *.01))
-									*(stockAverageHigh(stockKeyValue.get("ticker"),5)*
-									Double.parseDouble(stockKeyValue.get("amount")));
+						try {
+							testint[0]+= ((movement.ListDailyMovement(stockKeyValue.get("ticker"),5) *.01))
+										*((stockAverageHigh(stockKeyValue.get("ticker"),5)).get(0)*
+										Double.parseDouble(stockKeyValue.get("amount")));
+						} catch (NumberFormatException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						
 						System.out.println(stockKeyValue.toString());
 						
@@ -371,14 +356,11 @@ public class PowerStockController {
 
 					});
 					System.out.println(testint[0]);
-					return Stock.Evaluate(testint[0]);
-
 					
+					portGrade.put(username, Stock.Evaluate(testint[0]));
+					
+					return portGrade;
 
-			   	} catch (Exception e) {
-
-					return "none available";
-				}
 		   }
 }
    

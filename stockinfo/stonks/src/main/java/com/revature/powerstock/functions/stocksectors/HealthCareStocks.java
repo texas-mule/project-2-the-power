@@ -23,7 +23,7 @@ public class HealthCareStocks {
 			// Create A HashMap
 				HashMap<String, String> sectorData = new HashMap<String, String>();
 			
-		public ArrayList<String> getStocks() {
+		public HashMap<String, String> getStocks() {
 			// Technology
 			try {
 				
@@ -82,7 +82,7 @@ public class HealthCareStocks {
 			sector.add(" "+stockSymbols.get(9) + " - " + stockNames.get(9) +" <br>");
 
 			
-			return sector;
+			return sectorData;
 
 		}
 }

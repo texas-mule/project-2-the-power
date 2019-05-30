@@ -2,6 +2,7 @@ package com.revature.powerstock.functions.comparison;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -10,7 +11,7 @@ import com.project2.stockConsumerResources.Stock;
 
 public class CompareStocks {
 	
-	public String getStockComparison(String stock1, String stock2) throws Exception {
+	public HashMap<String, Double> getStockComparison(String stock1, String stock2) throws Exception {
 		// Comparison Parser
 		   		JSONParser comParser = new JSONParser();
 		   		
@@ -31,6 +32,7 @@ public class CompareStocks {
 		   		String secondStockData;
 		   		secondStockData = Stock.sendGet(secondStockURL);
 
+		   		HashMap<String, Double> compHashData = new HashMap<String, Double>();
 
 				// Compare Stock Data
 				try 
@@ -51,8 +53,11 @@ public class CompareStocks {
 					
 					double ratio = (firstStockPrice/secondStockPrice);
 					
-					DecimalFormat df = new DecimalFormat("####0.00");
+					DecimalFormat df = new DecimalFormat();
 					
+					compHashData.put(stock1, firstStockPrice);
+					compHashData.put(stock2, secondStockPrice);
+					compHashData.put("ratio", ratio);
 					
 					comparisonData =  " <h1> This is a Daily Comparison of "  + stock1.toUpperCase() + " vs. " + stock2.toUpperCase() + "</h1>"
 									+ " \nwith the values <br>"
@@ -67,6 +72,6 @@ public class CompareStocks {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-		return comparisonData;
+		return compHashData;
 	}
 }

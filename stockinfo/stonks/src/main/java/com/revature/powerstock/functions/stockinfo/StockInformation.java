@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.project2.stockConsumerResources.Stock;
 
 public class StockInformation {
-	public String ListStockInfo(String stock, int days)
+	public HashMap<String, Double> ListStockInfo(String stock, int days) throws Exception
 	   {
 		
-		   try {
+
 			   
 			String stockUrl = "https://financialmodelingprep.com/api/v3/historical-price-full/"+stock+"?timeseries=" + days;	
 			String stockData = Stock.sendGet(stockUrl);
@@ -31,6 +31,8 @@ public class StockInformation {
 			ArrayList<Double> stockHighData = new ArrayList<Double>();
 			ArrayList<Double> stockLowData = new ArrayList<Double>();
 			ArrayList<Double> stockChangeData = new ArrayList<Double>();
+			HashMap<String, Double> stockList = new HashMap<String, Double>();
+			ArrayList<Double> stockINFO = new ArrayList<Double>();
 		
 			details.forEach( timeseries ->
 			{
@@ -57,6 +59,8 @@ public class StockInformation {
 				sumHigh = sumHigh + stockHighData.get(i);
 				avgHigh = sumHigh/ stockHighData.size();
 			}
+			stockINFO.add(avgHigh);
+			stockList.put("high", avgHigh);
 			
 			double sumLow = 0;
 			double avgLow = 0;
@@ -66,6 +70,9 @@ public class StockInformation {
 				avgLow = sumLow / stockLowData.size();
 			}
 			
+			stockINFO.add(avgLow);
+			stockList.put("low", avgLow);
+			
 			double sumChange = 0;
 			double avgChange = 0;
 			
@@ -73,6 +80,9 @@ public class StockInformation {
 				sumChange = sumChange + stockChangeData.get(i);
 				avgChange = sumChange / stockChangeData.size();
 			}
+			
+			stockINFO.add(avgChange);
+			stockList.put("change", avgChange);
 			
 			DecimalFormat df = new DecimalFormat("####0.00");
 			
@@ -82,17 +92,13 @@ public class StockInformation {
 			System.out.println("average change over "+days+" days: "+ (avgChange) + "%");
 			System.out.println(stockKeyValue.toString());
 			
-			return "<h1> This is the stock info for " + stock.toUpperCase() + "</h1>\n"
+			String html =  "<h1> This is the stock info for " + stock.toUpperCase() + "</h1>\n"
 			 +" <br>"
 			 +" Average High over " + days + " days : " + df.format(avgHigh)+" <br>" 
 			 +" Average Low over " + days + " days : " + df.format(avgLow)  +" <br>"
 			 +" Average Change over " + days + " days : " + df.format(avgChange) + " %"+" <br>";
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "ERROR";
-		}
-		   
+			return stockList; 
 		   
 	   }
 }
