@@ -23,7 +23,7 @@ public class TechnologyStocks {
 			// Create A HashMap
 				HashMap<String, String> sectorData = new HashMap<String, String>();
 			
-		public ArrayList<String> getStocks() {
+		public HashMap<String, String> getStocks() {
 			// Technology
 			try {
 				
@@ -42,6 +42,7 @@ public class TechnologyStocks {
 				
 				// While Loop Iteration
 					int stockNumber = 0;
+					
 
 				// Gather 10 stockNames from TechSector
 					while(stockNumber<10)
@@ -57,6 +58,7 @@ public class TechnologyStocks {
 							stockNames.add(stockName);
 							
 							sectorData.put(stockSymbol, stockName);
+							
 							stockNumber++;		
 						
 						} catch (Exception e) {
@@ -82,7 +84,7 @@ public class TechnologyStocks {
 			sector.add(" "+stockSymbols.get(9) + " - " + stockNames.get(9) +" <br>");
 
 			
-			return sector;
+			return sectorData;
 
 		}
 }
