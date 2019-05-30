@@ -1,0 +1,341 @@
+#%RAML 1.0
+---
+title: thepowerAPI
+baseUri: https://api.127.0.0.1:8080/
+/auth:
+  /{id}:
+    delete:
+      description: delete authorization token from users
+  {api-key}:
+    post: 
+      description: Generates the JWT token based on the JSON sent. Its a POST method which expects the JSON
+/token:
+/users:
+  /{username}:
+    get:
+      description: This route takes a username as a URI param and returns a user object as json
+      responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    {
+                      id: 3,
+                      username: "bgates",
+                      password: "microsoft",
+                      funds: 21120.12,
+                      portfolio: "{
+                                    "portfolio":[
+                                    {"stock":"MSFT","amount":500},
+                                    {"stock":"AAPL","amount":102},
+                                    {"stock":"WDC","amount":45}
+                                    ]
+                                  }",
+                      portfolioValue: "{"stock":"MSFT","amount":500},
+                                      {"stock":"AAPL","amount":102},
+                                      {"stock":"WDC","amount":45}",
+                      customIndex: "{"stock":"MSFT"},{"stock":"AAPL"}",
+                      previousFunds: 19128.12,
+                      previousProfitMargin: 0,
+                      currentProfitMargin: 0
+                    }
+    /addfunds:
+      /{amount}:
+        post:
+          description: This route takes a username as a uri param and an amount as a double via the uri param and returns the user as json with updated info
+          responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    {
+                      id: 3,
+                      username: "bgates",
+                      password: "microsoft",
+                      funds: 21120.12,
+                      portfolio: "{
+                                    "portfolio":[
+                                    {"stock":"MSFT","amount":500},
+                                    {"stock":"AAPL","amount":102},
+                                    {"stock":"WDC","amount":45}
+                                    ]
+                                  }",
+                                  
+                      portfolioValue: "{"stock":"MSFT","amount":500},
+                                      {"stock":"AAPL","amount":102},
+                                      {"stock":"WDC","amount":45}",
+                      customIndex: "{"stock":"MSFT"},{"stock":"AAPL"}",
+                      previousFunds: 19128.12,
+                      previousProfitMargin: 0,
+                      currentProfitMargin: 0
+                    }
+    /index:
+      post:
+        description: This route takes a username as a uri param and the stocks via query params for ticker symbols to add a new set of stocks the user wishes to follow, returns user as json with updated info
+        queryParamters:
+          ticker:
+            diplayname: Ticker Symbol
+            type:string
+            example: aapl
+            required: true
+          amount:
+            diplayname: number of stocks
+            type:Number
+            example: 10
+            required: true
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    id: 3,
+                    username: "bgates",
+                    password: "microsoft",
+                    funds: 21120.12,
+                    portfolio: "{
+                                  "portfolio":[
+                                  {"stock":"MSFT","amount":500},
+                                  {"stock":"AAPL","amount":102},
+                                  {"stock":"WDC","amount":45}
+                                  ]
+                                }",
+                                
+                    portfolioValue: "{"stock":"MSFT","amount":500},
+                                    {"stock":"AAPL","amount":102},
+                                    {"stock":"WDC","amount":45}",
+                    customIndex: "{"stock":"MSFT"},{"stock":"AAPL"}",
+                    previousFunds: 19128.12,
+                    previousProfitMargin: 0,
+                    currentProfitMargin: 0
+                    }
+    /portfolio:
+      get:
+        description: This route takes a username as a uri param returns the portfolio for the user
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                {
+                    portfolio: "{
+                                  "portfolio":[
+                                  {"stock":"MSFT","amount":500},
+                                  {"stock":"AAPL","amount":102},
+                                  {"stock":"WDC","amount":45}
+                                  ]
+                                }",
+                }
+    /buyStocks:
+      post:
+        description:This route takes a username as a uri param and will add to your portfolio if funds are sufficient the stock and the amount you attempt to purchase, will detract from funds
+        queryParamters:
+          ticker:
+            diplayname: Ticker Symbol
+            type:string
+            example: aapl
+            required: true
+          amount:
+            diplayname: number of stocks
+            type:Number
+            example: 10
+            required: true
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"portfolio":[
+                  {"stock":"WDC","amount":45},
+                  {"stock":"AAPL","amount":101},
+                  {"stock":"MSFT","amount":500}
+                  ]}
+          
+    /sellStocks:
+      post:
+        description: This route takes a username as a uri param and will sell stocks from your portfolio if valid within portfolio will add sell amount to user funds
+        queryParamters:
+          ticker:
+            diplayname: Ticker Symbol
+            type:string
+            example: aapl
+            required: true
+          amount:
+            diplayname: number of stocks
+            type:Number
+            example: 10
+            required: true
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"portfolio":[
+                  {"stock":"WDC","amount":45},
+                  {"stock":"AAPL","amount":101},
+                  {"stock":"MSFT","amount":500}
+                  ]}
+/articles
+  /searchcompany:
+    /{companyname}:
+      get:
+        description: gets articles by company name and returns details in json
+        responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    {
+                      "{ "title":title,
+                        "author":author,
+                        "publisher":Publisher,
+                        "link": link,
+                        "date_created":date,
+                        "summary": summary,
+                        "results": results
+                    }
+  /searchkeyword:
+    /{keyword}:
+      get:
+        description: search for articles by keyword and returns details in json
+        responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    {
+                      "{ "title":title,
+                        "author":author,
+                        "publisher":Publisher,
+                        "link": link,
+                        "date_created":date,
+                        "summary": summary,
+                        "results": results
+                    }
+  /getarticle:
+    /{id}:
+      get:
+        description: gets articles by id and returns details in json
+        responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    {
+                      "{ "title":title,
+                        "author":author,
+                        "publisher":Publisher,
+                        "link": link,
+                        "date_created":date,
+                        "summary": summary,
+                        "results": results
+                    }
+  /getifkeywordmatch:
+    /{keyword}:
+      get:
+        description:gets articles by keyword and returns details in json
+        responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    {
+                      "{ "title":title,
+                        "author":author,
+                        "publisher":Publisher,
+                        "link": link,
+                        "date_created":date,
+                        "summary": summary,
+                        "results": results
+                    }
+/stock:
+  /stocks:
+    /compare:
+      /{stock1}:
+        /{stock2}:
+          get:
+            description: tell which share is worth more
+            responses:
+              200:
+                body:
+                  String:
+                    example: |
+                      {output: "aapl is worth 1.7 shares of wmt"}
+  /customindex:
+    /{timeframe}:
+      /{username}:
+        get:
+            description: return conglomerated movement of index
+            responses:
+              200:
+                body:
+                  application/json:
+                    example: |
+                      {"index": .0312}
+  /price:
+    /{ticker}:
+      get:
+        description: return conglomerated movement of index
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"cost": .0312}
+  /high:
+    /{stock}:
+      /{days}:
+        get:
+            description: return conglomerated movement of index
+            responses:
+              200:
+                body:
+                  application/json:
+                    example: |
+                      {"high": .0312}
+  /low:
+    /{stock}:
+      /{days}:
+        get:
+          description: return average high of stock
+          responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    {"low": .0312}
+  /stockinfo:
+    /{stock}:
+      /{days}:
+        get:
+          description: return average of high, low, movement of stock
+          responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    {
+                    "high": .0312,
+                    "low":.01,
+                    "change": .03
+                    }
+  /portfolio:
+    /{username}:
+      get:
+        description: return portfolio grade
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"mvmt": .065}
+  /fairprice:
+    /{stock}:
+      get:
+        description: returns reccomendation for buying
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"action": "dont buy"}
