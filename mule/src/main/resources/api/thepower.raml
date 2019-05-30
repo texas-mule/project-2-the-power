@@ -6,7 +6,7 @@ baseUri: https://api.127.0.0.1:8080/
   /{id}:
     delete:
       description: delete authorization token from users
-  {api-key}:
+  /{api-key}:
     post: 
       description: Generates the JWT token based on the JSON sent. Its a POST method which expects the JSON
 /token:
@@ -72,15 +72,15 @@ baseUri: https://api.127.0.0.1:8080/
     /index:
       post:
         description: This route takes a username as a uri param and the stocks via query params for ticker symbols to add a new set of stocks the user wishes to follow, returns user as json with updated info
-        queryParamters:
+        queryParameters:
           ticker:
-            diplayname: Ticker Symbol
-            type:string
+            displayName: Ticker Symbol
+            type: string
             example: aapl
             required: true
           amount:
-            diplayname: number of stocks
-            type:Number
+            displayName: number of stocks
+            type: number
             example: 10
             required: true
         responses:
@@ -117,27 +117,21 @@ baseUri: https://api.127.0.0.1:8080/
             body:
               application/json:
                 example: |
-                {
-                    portfolio: "{
-                                  "portfolio":[
-                                  {"stock":"MSFT","amount":500},
-                                  {"stock":"AAPL","amount":102},
-                                  {"stock":"WDC","amount":45}
-                                  ]
-                                }",
-                }
+                  {portfolio: "{"stock":"MSFT","amount":500},
+                                      {"stock":"AAPL","amount":102},
+                                      {"stock":"WDC","amount":45}"}
     /buyStocks:
       post:
-        description:This route takes a username as a uri param and will add to your portfolio if funds are sufficient the stock and the amount you attempt to purchase, will detract from funds
-        queryParamters:
+        description: This route takes a username as a uri param and will add to your portfolio if funds are sufficient the stock and the amount you attempt to purchase, will detract from funds
+        queryParameters:
           ticker:
-            diplayname: Ticker Symbol
-            type:string
+            displayName: Ticker Symbol
+            type: string
             example: aapl
             required: true
           amount:
-            diplayname: number of stocks
-            type:Number
+            displayName: number of stocks
+            type: number
             example: 10
             required: true
         responses:
@@ -154,15 +148,15 @@ baseUri: https://api.127.0.0.1:8080/
     /sellStocks:
       post:
         description: This route takes a username as a uri param and will sell stocks from your portfolio if valid within portfolio will add sell amount to user funds
-        queryParamters:
+        queryParameters:
           ticker:
-            diplayname: Ticker Symbol
-            type:string
+            displayName: Ticker Symbol
+            type: string
             example: aapl
             required: true
           amount:
-            diplayname: number of stocks
-            type:Number
+            displayName: number of stocks
+            type: number
             example: 10
             required: true
         responses:
@@ -175,7 +169,7 @@ baseUri: https://api.127.0.0.1:8080/
                   {"stock":"AAPL","amount":101},
                   {"stock":"MSFT","amount":500}
                   ]}
-/articles
+/articles:
   /searchcompany:
     /{companyname}:
       get:
@@ -233,7 +227,7 @@ baseUri: https://api.127.0.0.1:8080/
   /getifkeywordmatch:
     /{keyword}:
       get:
-        description:gets articles by keyword and returns details in json
+        description: gets articles by keyword and returns details in json
         responses:
             200:
               body:
@@ -258,7 +252,7 @@ baseUri: https://api.127.0.0.1:8080/
             responses:
               200:
                 body:
-                  String:
+                  application/json:
                     example: |
                       {output: "aapl is worth 1.7 shares of wmt"}
   /customindex:
