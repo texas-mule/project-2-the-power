@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: 607d2c3c45c6da189544344fa0b6b108d1b802583024a287759cd13a73c172de
+    url: jdbc:postgresql://ec2-75-101-128-10.compute-1.amazonaws.com:5432/d5i8ohq4jt6hr9?user=qcnpebxdlasbgb&password=607d2c3c45c6da189544344fa0b6b108d1b802583024a287759cd13a73c172de
+    username: qcnpebxdlasbgb
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+
+server:
+  port: 4242
+  
