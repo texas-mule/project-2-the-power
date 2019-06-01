@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+<mule xmlns:smtps="http://www.mulesoft.org/schema/mule/smtps" xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp" xmlns:twilio="http://www.mulesoft.org/schema/mule/twilio" xmlns:imap="http://www.mulesoft.org/schema/mule/imap" xmlns:cloudhub="http://www.mulesoft.org/schema/mule/cloudhub" xmlns:apikit="http://www.mulesoft.org/schema/mule/apikit" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:spring="http://www.springframework.org/schema/beans" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
@@ -10,14 +10,21 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
 http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
 http://www.mulesoft.org/schema/mule/apikit http://www.mulesoft.org/schema/mule/apikit/current/mule-apikit.xsd
-http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd">
-    <http:listener-config name="HTTP_Listener_Configuration" host="localhost" port="8080" basePath="/howto" doc:name="HTTP Listener Configuration"/>
-    <http:listener-config name="HTTP_Listener_Configuration1" host="localhost" port="8085" basePath="/thepower" doc:name="HTTP Listener Configuration"/>
-    <http:request-config name="Auth"  host="myaauth.herokuapp.com" port="80" doc:name="HTTP Request Configuration"/>
-    <http:request-config name="StockInfoConfig" host="thepowerstock.herokuapp.com" port="80" basePath="/stock" doc:name="HTTP Request Configuration"/>
-    <http:request-config name="Articles" host="ec2-3-16-91-173.us-east-2.compute.amazonaws.com" port="8080" basePath="/articles" doc:name="HTTP Request Configuration"/>
-    <http:request-config name="UserInfo" host="rajj.herokuapp.com" port="80" doc:name="HTTP Request Configuration"/>
-    <apikit:config name="Router" raml="api/thepower.raml" consoleEnabled="true" consolePath="console" keepRamlBaseUri="false" doc:name="Router"/>
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
+http://www.mulesoft.org/schema/mule/cloudhub http://www.mulesoft.org/schema/mule/cloudhub/current/mule-cloudhub.xsd
+http://www.mulesoft.org/schema/mule/twilio http://www.mulesoft.org/schema/mule/twilio/current/mule-twilio.xsd
+http://www.mulesoft.org/schema/mule/imap http://www.mulesoft.org/schema/mule/imap/current/mule-imap.xsd
+http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/current/mule-smtp.xsd
+http://www.mulesoft.org/schema/mule/smtps http://www.mulesoft.org/schema/mule/smtps/current/mule-smtps.xsd">
+    <http:listener-config name="HTTP_Listener_Configuration1" host="0.0.0.0" port="${HTTP_PORT}" basePath="/thepower" doc:name="HTTP Listener Configuration"/>
+    <http:request-config name="Auth"  host="myaauth.herokuapp.com" port="${HTTP_PORT}" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="StockInfoConfig" host="thepowerstock.herokuapp.com" port="${HTTP_PORT}" basePath="/stock" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="Articles" host="ec2-3-16-91-173.us-east-2.compute.amazonaws.com" port="${HTTP_PORT}" basePath="/articles" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="UserInfo" host="rajj.herokuapp.com" port="${HTTP_PORT}" doc:name="HTTP Request Configuration"/>
+    <apikit:config name="Router" raml="src/main/resources/api/thepower.raml" consoleEnabled="true" consolePath="console" keepRamlBaseUri="false" doc:name="Router"/>
+    <cloudhub:config name="Cloudhub__Basic_Auth_Authentication" username="AndyOrel90" password="052990mMay!" doc:name="Cloudhub: Basic Auth Authentication"/>
+    <twilio:config name="Twilio__Basic_Authentication" username="AC1ca837e0141aae7254e6c1f2e855803f" password="121a88f9c6c472ab6b4afaa71b70f54d" doc:name="Twilio: Basic Authentication"/>
+    <smtp:connector name="SMTP" subject="From Mule Endpoint" validateConnections="true" doc:name="SMTP"/>
     <sub-flow name="AuthSubFlow">
         <set-variable variableName="token" value="#[message.inboundProperties.'http.query.params'.token]" doc:name="token"/>
         <choice doc:name="Choice">
@@ -31,6 +38,31 @@ http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mul
             </otherwise>
         </choice>
     </sub-flow>
+    <sub-flow name="TextInfo">
+        <choice doc:name="Choice">
+            <when expression="#[flowVars.toNumber != null]">
+                <dw:transform-message doc:name="Transform Message">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+{
+    body: write(payload,"application/json"),
+    //body: (payload map $),
+    from: "9729927258",
+    to: "+1" ++ flowVars.toNumber
+} as :object {
+    class : "org.mule.modules.twilio.pojo.sendmessagerequest.MessageInput"
+}]]></dw:set-payload>
+                </dw:transform-message>
+                <logger message="#[message.payloadAs(java.lang.String)] payload here!!!!!!" level="INFO" doc:name="Logger"/>
+                <twilio:send-message config-ref="Twilio__Basic_Authentication" AccountSid="AC1ca837e0141aae7254e6c1f2e855803f" doc:name="Twilio"/>
+                <set-payload value="{&quot;messagesent&quot;:&quot;text message has been sent&quot;}" doc:name="Set Payload"/>
+            </when>
+            <otherwise>
+                <logger message="logger ran" level="INFO" doc:name="Logger"/>
+            </otherwise>
+        </choice>
+    </sub-flow>
 
     <flow name="AuthGetToken">
         <http:listener config-ref="HTTP_Listener_Configuration1" path="/authtoken" doc:name="HTTP" allowedMethods="POST"/>
@@ -38,6 +70,7 @@ http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mul
         <response>
             <http:request config-ref="Auth" path="/token" method="POST" doc:name="HTTP"/>
         </response>
+
 
 
 
@@ -69,6 +102,7 @@ payload]]></dw:set-payload>
                 </http:request-builder>
             </http:request>
         </response>
+
         <flow-ref name="AuthSubFlow" doc:name="Flow Reference"/>
 
 
@@ -98,6 +132,7 @@ payload]]></dw:set-payload>
                 <http:uri-param paramName="days" value="#[flowVars.days]"/>
             </http:request-builder>
         </http:request>
+        <flow-ref name="TextInfo" doc:name="Flow Reference"/>
     </flow>
     <flow name="DailyLowStockInfo">
         <http:listener config-ref="HTTP_Listener_Configuration1" path="/lowaverage/{stock}/{days}" allowedMethods="GET" doc:name="HTTP"/>
@@ -154,13 +189,10 @@ payload]]></dw:set-payload>
                 </http:request-builder>
             </http:request>
         </response>
+
         <flow-ref name="AuthSubFlow" doc:name="Flow Reference"/>
 
 
-    </flow>
-    <flow name="project2muleFlow">
-        <http:listener config-ref="HTTP_Listener_Configuration1" path="/raml/*" allowedMethods="GET" doc:name="HTTP"/>
-        <apikit:console config-ref="Router" doc:name="APIkit Console"/>
     </flow>
     <flow name="UserInfoUsers">
         <http:listener config-ref="HTTP_Listener_Configuration1" path="/userinfo/{username}" allowedMethods="GET" doc:name="HTTP"/>
@@ -206,9 +238,48 @@ payload]]></dw:set-payload>
         </response>
 
 
+
         <set-variable variableName="username" value="#[message.inboundProperties.'http.uri.params'.username]" doc:name="Username"/>
         <set-variable variableName="amount" value="#[message.inboundProperties.'http.uri.params'.amount]" doc:name="Amont"/>
         <flow-ref name="AuthSubFlow" doc:name="Flow Reference"/>
+    </flow>
+    <flow name="RAML">
+        <http:listener config-ref="HTTP_Listener_Configuration1" path="/raml/*" doc:name="HTTP"/>
+        <apikit:console config-ref="Router" doc:name="APIkit Console"/>
+    </flow>
+
+    <flow name="DailyHighText">
+        <http:listener config-ref="HTTP_Listener_Configuration1" path="/texthighaverage/{stock}/{days}" allowedMethods="GET" doc:name="HTTP"/>
+        <set-variable variableName="stock" value="#[message.inboundProperties.'http.uri.params'.stock]" doc:name="Stock"/>
+
+        <set-variable variableName="days" value="#[message.inboundProperties.'http.uri.params'.days]" doc:name="Days"/>
+        <set-variable variableName="toNumber" value="#[message.inboundProperties.'http.query.params'.toNumber]" doc:name="toNumber"/>
+        <flow-ref name="AuthSubFlow" doc:name="Flow Reference"/>
+        <http:request config-ref="StockInfoConfig" path="/high/{stock}/{days}" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:uri-param paramName="stock" value="#[flowVars.stock]"/>
+                <http:uri-param paramName="days" value="#[flowVars.days]"/>
+            </http:request-builder>
+        </http:request>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <flow-ref name="TextInfo" doc:name="Flow Reference"/>
+    </flow>
+    <flow name="DailyLowText">
+        <http:listener config-ref="HTTP_Listener_Configuration1" path="/texthighaverage/{stock}/{days}" allowedMethods="GET" doc:name="HTTP"/>
+        <set-variable variableName="stock" value="#[message.inboundProperties.'http.uri.params'.stock]" doc:name="Stock"/>
+
+        <set-variable variableName="days" value="#[message.inboundProperties.'http.uri.params'.days]" doc:name="Days"/>
+        <set-variable variableName="toNumber" value="#[message.inboundProperties.'http.query.params'.toNumber]" doc:name="toNumber"/>
+        <flow-ref name="AuthSubFlow" doc:name="Flow Reference"/>
+        <http:request config-ref="StockInfoConfig" path="/low/{stock}/{days}" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:uri-param paramName="stock" value="#[flowVars.stock]"/>
+                <http:uri-param paramName="days" value="#[flowVars.days]"/>
+
+            </http:request-builder>
+        </http:request>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        <flow-ref name="TextInfo" doc:name="Flow Reference"/>
     </flow>
 
 </mule>
