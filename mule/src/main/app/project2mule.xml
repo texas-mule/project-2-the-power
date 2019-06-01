@@ -23,7 +23,7 @@ http://www.mulesoft.org/schema/mule/smtps http://www.mulesoft.org/schema/mule/sm
     <http:request-config name="UserInfo" host="rajj.herokuapp.com" port="${HTTP_PORT}" doc:name="HTTP Request Configuration"/>
     <apikit:config name="Router" raml="src/main/resources/api/thepower.raml" consoleEnabled="true" consolePath="console" keepRamlBaseUri="false" doc:name="Router"/>
     <cloudhub:config name="Cloudhub__Basic_Auth_Authentication" username="AndyOrel90" password="052990mMay!" doc:name="Cloudhub: Basic Auth Authentication"/>
-    <twilio:config name="Twilio__Basic_Authentication" username="AC1ca837e0141aae7254e6c1f2e855803f" password="121a88f9c6c472ab6b4afaa71b70f54d" doc:name="Twilio: Basic Authentication"/>
+    <twilio:config name="Twilio__Basic_Authentication" username="" password="" doc:name="Twilio: Basic Authentication"/>
     <smtp:connector name="SMTP" subject="From Mule Endpoint" validateConnections="true" doc:name="SMTP"/>
     <sub-flow name="AuthSubFlow">
         <set-variable variableName="token" value="#[message.inboundProperties.'http.query.params'.token]" doc:name="token"/>
