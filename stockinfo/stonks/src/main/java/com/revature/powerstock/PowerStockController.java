@@ -246,7 +246,7 @@ public class PowerStockController {
 				sectorComparison.trim();
 				sectorComparison = sectorComparison.replaceAll("\\s", "%20");
 	
-				String stockUrl2 = "https://api.iextrading.com/1.0/stock/market/collection/sector?collectionName="+sectorComparison;	
+				String stockUrl2 = "https://cloud.iexapis.com/stable/stock/market/collection/sector?collectionName=" + sectorComparison + "&token=sk_77ef8dc8d96c43f7ae4624d7ea5b228e";	
 				String stockData2 = Stock.sendGet(stockUrl2);
 				JSONParser parser2 = new JSONParser();
 				JSONArray stockJson2 = (JSONArray) parser2.parse(stockData2);
