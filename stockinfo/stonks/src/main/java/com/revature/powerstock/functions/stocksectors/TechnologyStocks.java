@@ -31,7 +31,7 @@ public class TechnologyStocks {
 					JSONParser stockParser = new JSONParser();
 				
 				// URL
-					String techURL = "https://api.iextrading.com/1.0/stock/market/collection/sector?collectionName=Technology";	
+					String techURL = "https://api.iextrading.com/1.0/stock/market/collection/sector?collectionName=Technology&token=sk_77ef8dc8d96c43f7ae4624d7ea5b228e";	
 				
 				// URL DATA -> String
 					String techDataString = Stock.sendGet(techURL);
