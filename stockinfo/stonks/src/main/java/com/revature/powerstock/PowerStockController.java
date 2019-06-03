@@ -41,17 +41,17 @@ public class PowerStockController {
 			
 			System.out.println("Technology Stocks");
 		
-		// Gather Consumer Defensive Stock Data
-			ConsumerDefensiveStocks conDefStockData = new ConsumerDefensiveStocks();
-			sectors.put("Consumer Defensive", conDefStockData.getStocks());
+// 		// Gather Consumer Defensive Stock Data
+// 			ConsumerDefensiveStocks conDefStockData = new ConsumerDefensiveStocks();
+// 			sectors.put("Consumer Defensive", conDefStockData.getStocks());
 				
-			System.out.println("Consumber Defensive Stocks");
+// 			System.out.println("Consumber Defensive Stocks");
 		
-		// Gather HealthCare Stock Data
-			HealthCareStocks healthStockData = new HealthCareStocks();
-			sectors.put("Health Care", healthStockData.getStocks());
+// 		// Gather HealthCare Stock Data
+// 			HealthCareStocks healthStockData = new HealthCareStocks();
+// 			sectors.put("Health Care", healthStockData.getStocks());
 					
-			System.out.println("HealthCare Stocks");
+// 			System.out.println("HealthCare Stocks");
 		
 		return sectors;
 
