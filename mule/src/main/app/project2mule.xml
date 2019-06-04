@@ -264,22 +264,6 @@ payload]]></dw:set-payload>
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
         <flow-ref name="TextInfo" doc:name="Flow Reference"/>
     </flow>
-    <flow name="DailyLowText">
-        <http:listener config-ref="HTTP_Listener_Configuration1" path="/texthighaverage/{stock}/{days}" allowedMethods="GET" doc:name="HTTP"/>
-        <set-variable variableName="stock" value="#[message.inboundProperties.'http.uri.params'.stock]" doc:name="Stock"/>
-
-        <set-variable variableName="days" value="#[message.inboundProperties.'http.uri.params'.days]" doc:name="Days"/>
-        <set-variable variableName="toNumber" value="#[message.inboundProperties.'http.query.params'.toNumber]" doc:name="toNumber"/>
-        <flow-ref name="AuthSubFlow" doc:name="Flow Reference"/>
-        <http:request config-ref="StockInfoConfig" path="/low/{stock}/{days}" method="GET" doc:name="HTTP">
-            <http:request-builder>
-                <http:uri-param paramName="stock" value="#[flowVars.stock]"/>
-                <http:uri-param paramName="days" value="#[flowVars.days]"/>
-
-            </http:request-builder>
-        </http:request>
-        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
-        <flow-ref name="TextInfo" doc:name="Flow Reference"/>
-    </flow>
+   
 
 </mule>
